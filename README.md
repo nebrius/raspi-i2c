@@ -1,7 +1,7 @@
-Raspi GPIO
-==========
+Raspi I2C
+=========
 
-Node.js interface for the GPIO on the Raspberry Pi. Docs coming soon!
+Node.js interface for I2C on the Raspberry Pi. Docs coming soon!
 
 License
 =======
