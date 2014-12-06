@@ -22,22 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <node.h>
 #include <nan.h>
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
-#include "utils.h"
+#include <cerrno>
 
-using v8::Number;
-
-NAN_METHOD(init) {
-  NanScope();
-
-  int address = args[0]->Int32Value();
-  int fd = wiringPiI2CSetup(address);
-  if (fd == -1) {
-    throwError();
-  } else {
-    NanReturnValue(NanNew<Number>(fd));
-  }
+void throwError() {
+  char buffer[ 256 ];
+  char* errorMessage = strerror_r( errno, buffer, 256 ); // get string message from errno
+  NanThrowError(errorMessage);
 }

@@ -26,18 +26,38 @@ THE SOFTWARE.
 #include <nan.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
-#include "utils.h"
 
 using v8::Number;
 
-NAN_METHOD(init) {
+NAN_METHOD(write) {
   NanScope();
 
-  int address = args[0]->Int32Value();
-  int fd = wiringPiI2CSetup(address);
-  if (fd == -1) {
-    throwError();
-  } else {
-    NanReturnValue(NanNew<Number>(fd));
-  }
+  int fd = args[0]->Int32Value();
+  int data = args[1]->Int32Value();
+
+  NanReturnUndefined();
+}
+
+NAN_METHOD(writeReg8) {
+  NanScope();
+
+  int fd = args[0]->Int32Value();
+  int reg = args[1]->Int32Value();
+  int data = args[2]->Int32Value();
+
+  wiringPiI2CWriteReg8(fd, reg, data);
+
+  NanReturnUndefined();
+}
+
+NAN_METHOD(writeReg16) {
+  NanScope();
+
+  int fd = args[0]->Int32Value();
+  int reg = args[1]->Int32Value();
+  int data = args[2]->Int32Value();
+
+  wiringPiI2CWriteReg16(fd, reg, data);
+
+  NanReturnUndefined();
 }

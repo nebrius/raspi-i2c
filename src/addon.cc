@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2013-2014 Bryan Hughes <bryan@theoreticalideations.com> (http://theoreticalideations.com)
+Copyright (c) 2014 Bryan Hughes <bryan@theoreticalideations.com> (http://theoreticalideations.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@ THE SOFTWARE.
 #include <node.h>
 #include <nan.h>
 #include "init.h"
+#include "write.h"
+#include "read.h"
 
 using v8::FunctionTemplate;
 using v8::Handle;
@@ -33,6 +35,18 @@ using v8::String;
 
 void InitAll(Handle<Object> exports) {
   exports->Set(NanNew<String>("init"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("read"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("readReg8"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("readReg16"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("write"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("writeReg8"),
+    NanNew<FunctionTemplate>(init)->GetFunction());
+  exports->Set(NanNew<String>("writeReg16"),
     NanNew<FunctionTemplate>(init)->GetFunction());
 }
 

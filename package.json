@@ -6,7 +6,7 @@
   "dependencies": {
     "nan": "^1.4.0",
     "raspi-peripheral": "^1.0.1",
-    "execsync": "0.0.6"
+    "execSync": "^1.0.2"
   },
   "devDependencies": {
     "del": "^0.1.3",
