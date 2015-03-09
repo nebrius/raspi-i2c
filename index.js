@@ -24,62 +24,81 @@ THE SOFTWARE.
 
 import sh from 'execSync';
 import { Peripheral } from 'raspi-peripheral';
-import addon from '../build/Release/addon';
 
 export class I2C extends Peripheral {
-  constructor(address, baudRate) {
-    super([ 'SDA', 'SCL' ]);
+  constructor(baudRate, pins) {
+    super(pins || [ 'SDA0', 'SCL0' ]);
     if (baudRate) {
       if (typeof baudRate != number || baudRate % 1000 != 0) {
         throw new Error('Invalid I2C baud rate. Baud rates must be a multiple of 1000');
       }
       sh.run('gpio load i2c ' + baudRate);
     } else {
-      sh.run('gpio load i2c');
+      sh.run('gpio load i2c'); // Is this still necessary?
     }
-    this.address = address;
-    this.fd = addon.init(this.address);
   }
 
-  read() {
-    if (!this.alive) {
-      throw new Error('Attempted to read from a destroyed peripheral');
-    }
-    return addon.read();
+  destroy() {
+    super.destroy();
   }
 
-  readReg8() {
-    if (!this.alive) {
-      throw new Error('Attempted to read from a destroyed peripheral');
-    }
-    return addon.readReg8();
+  // function cb(err, buffer), returns undefined, register is optional
+  i2cRead(address, register, length, cb) {
+    throw new Error('Not implemented');
   }
 
-  readReg16() {
-    if (!this.alive) {
-      throw new Error('Attempted to read from a destroyed peripheral');
-    }
-    return addon.readReg16();
+  // Returns a buffer, register is optional
+  i2cReadSync(address, register, length) {
+    throw new Error('Not implemented');
   }
 
-  write(value) {
-    if (!this.alive) {
-      throw new Error('Attempted to write to a destroyed peripheral');
-    }
-    addon.write(value);
+  // function cb(err, value), returns undefined, register is optional
+  readByte(address, register, cb) {
+    throw new Error('Not implemented');
   }
 
-  writeReg8(value) {
-    if (!this.alive) {
-      throw new Error('Attempted to write to a destroyed peripheral');
-    }
-    addon.writeReg8(value);
+  // returns the value, register is optional
+  readByteSync(address, register) {
+    throw new Error('Not implemented');
   }
 
-  writeReg16(value) {
-    if (!this.alive) {
-      throw new Error('Attempted to write to a destroyed peripheral');
-    }
-    addon.writeReg16(value);
+  // function cb(err, value), returns undefined, register is optional
+  readWord(address, register, cb) {
+    throw new Error('Not implemented');
+  }
+
+  // returns the value, register is optional
+  readWordSync(address, register) {
+    throw new Error('Not implemented');
+  }
+
+  // function cb(err), returns undefined, register is optional
+  i2cWrite(address, register, buffer, cb) {
+    throw new Error('Not implemented');
+  }
+
+  // returns undefined, register is optional
+  i2cWriteSync(address, register, buffer) {
+    throw new Error('Not implemented');
+  }
+
+  // function cb(err), returns undefined, register is optional
+  writeByte(address, register, byte, cb) {
+    throw new Error('Not implemented');
+  }
+
+  // returns undefined, register is optional
+  writeByteSync(address, register, byte) {
+    throw new Error('Not implemented');
+  }
+
+  // function cb(err), returns undefined, register is optional
+  writeWord(address, register, word, cb) {
+    throw new Error('Not implemented');
+  }
+
+  // returns undefined, register is optional
+  writeWordSync(address, register, word) {
+    throw new Error('Not implemented');
   }
 }
