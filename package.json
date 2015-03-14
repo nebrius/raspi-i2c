@@ -4,9 +4,9 @@
   "description": "Provides access to I2C on the Raspberry Pi from Node.js ",
   "main": "lib/index.js",
   "dependencies": {
-    "nan": "1.6.x",
-    "raspi-peripheral": "1.1.0",
-    "execSync": "^1.0.2"
+    "i2c-bus": "^0.11.0",
+    "raspi-board": "2.1.0",
+    "raspi-peripheral": "1.1.0"
   },
   "devDependencies": {
     "del": "^1.1.1",
@@ -15,8 +15,7 @@
     "gulp-sourcemaps": "^1.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
