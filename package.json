@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "dependencies": {
     "i2c-bus": "^0.11.0",
-    "raspi-board": "2.1.0",
-    "raspi-peripheral": "1.1.0"
+    "raspi-board": "2.1.1",
+    "raspi-peripheral": "1.1.1"
   },
   "devDependencies": {
     "del": "^1.1.1",
@@ -15,7 +15,8 @@
     "gulp-sourcemaps": "^1.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "./scripts/install-execsync"
   },
   "repository": {
     "type": "git",

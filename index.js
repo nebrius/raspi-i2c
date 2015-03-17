@@ -29,7 +29,7 @@ import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
 if (typeof execSync !== 'function') {
-  execSync = function () {};
+  execSync = require('execsync');
 }
 
 function checkAlive(alive) {
@@ -111,11 +111,9 @@ export class I2C extends Peripheral {
       if (typeof baudRate != number || baudRate % 1000 != 0) {
         throw new Error('Invalid I2C baud rate. Baud rates must be a multiple of 1000');
       }
-      //sh.run('gpio load i2c ' + baudRate);
-      execSync('gpio load i2c ' + baudRate);
+      execSync('gpio load i2c ' + baudRate); // Is this still necessary?
     } else {
-      //sh.run('gpio load i2c'); // Is this still necessary?
-      execSync('gpio load i2c');
+      execSync('gpio load i2c'); // Is this still necessary?
     }
   }
 
