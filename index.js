@@ -22,20 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//import sh from 'execSync';
 import i2c from 'i2c-bus';
 import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
 if (typeof execSync !== 'function') {
-  execSync = require('execsync');
-}
-
-function checkAlive(alive) {
-  if (!alive) {
-    throw new Error('Attempted to access a destroyed I2C peripheral');
-  }
+  execSync = require('execSync').run;
 }
 
 function checkAddress(address) {
@@ -93,12 +86,14 @@ function checkWord(word) {
   }
 }
 
-var devices = '__r$396836_0$__';
-var getDevice = '__r$396836_1$__';
+var checkAlive = '__r$396836_0$__';
+var devices = '__r$396836_1$__';
+var getDevice = '__r$396836_2$__';
 
 export class I2C extends Peripheral {
-  constructor(baudRate, pins) {
-    super(pins || [ 'SDA0', 'SCL0' ]);
+  constructor(options) {
+    options = options || {};
+    super(options.pins || [ 'SDA0', 'SCL0' ]);
 
     Object.defineProperties(this, {
       [devices]: {
@@ -107,14 +102,7 @@ export class I2C extends Peripheral {
       }
     });
 
-    if (baudRate) {
-      if (typeof baudRate != number || baudRate % 1000 != 0) {
-        throw new Error('Invalid I2C baud rate. Baud rates must be a multiple of 1000');
-      }
-      execSync('gpio load i2c ' + baudRate); // Is this still necessary?
-    } else {
-      execSync('gpio load i2c'); // Is this still necessary?
-    }
+    execSync('modprobe i2c-dev');
   }
 
   destroy() {
@@ -125,6 +113,12 @@ export class I2C extends Peripheral {
     this[devices] = [];
 
     super.destroy();
+  }
+
+  [checkAlive]() {
+    if (!this.alive) {
+      throw new Error('Attempted to access a destroyed I2C peripheral');
+    }
   }
 
   [getDevice](address) {
@@ -141,10 +135,7 @@ export class I2C extends Peripheral {
   // function cb(err, buffer), returns undefined, register is optional
   // Required by J5
   i2cRead(address, register, length, cb) {
-    var buffer;
-    var callback;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 3) {
       cb = length;
@@ -157,8 +148,8 @@ export class I2C extends Peripheral {
     checkLength(length);
     checkCallback(cb);
 
-    buffer = new Buffer(length);
-    callback = function (err) {
+    var buffer = new Buffer(length);
+    function callback(err) {
       if (err) {
         return cb(err);
       }
@@ -174,9 +165,7 @@ export class I2C extends Peripheral {
 
   // Returns a buffer, register is optional
   i2cReadSync(address, register, length) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       length = register;
@@ -187,7 +176,7 @@ export class I2C extends Peripheral {
     checkRegister(register);
     checkLength(length);
 
-    buffer = new Buffer(length);
+    var buffer = new Buffer(length);
 
     if (register === undefined) {
       this[getDevice](address).i2cReadSync(address, length, buffer);
@@ -200,9 +189,7 @@ export class I2C extends Peripheral {
 
   // function cb(err, value), returns undefined, register is optional
   readByte(address, register, cb) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       cb = register;
@@ -214,7 +201,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      buffer = new Buffer(1);
+      var buffer = new Buffer(1);
       this[getDevice](address).i2cRead(address, buffer.length, buffer, function (err) {
         if (err) {
           return cb(err);
@@ -228,15 +215,13 @@ export class I2C extends Peripheral {
 
   // returns the value, register is optional
   readByteSync(address, register) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     checkAddress(address);
     checkRegister(register);
 
     if (register === undefined) {
-      buffer = new Buffer(1);
+      var buffer = new Buffer(1);
       this[getDevice](address).i2cReadSync(address, buffer.length, buffer);
       return buffer[0];
     } else {
@@ -246,9 +231,7 @@ export class I2C extends Peripheral {
 
   // function cb(err, value), returns undefined, register is optional
   readWord(address, register, cb) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       cb = register;
@@ -260,7 +243,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      buffer = new Buffer(2);
+      var buffer = new Buffer(2);
       this[getDevice](address).i2cRead(address, buffer.length, buffer, function (err) {
         if (err) {
           return cb(err);
@@ -274,15 +257,13 @@ export class I2C extends Peripheral {
 
   // returns the value, register is optional
   readWordSync(address, register) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     checkAddress(address);
     checkRegister(register);
 
     if (register === undefined) {
-      buffer = new Buffer(2);
+      var buffer = new Buffer(2);
       this[getDevice](address).i2cReadSync(address, buffer.length, buffer);
       return buffer.readUInt16LE(0);
     } else {
@@ -292,7 +273,7 @@ export class I2C extends Peripheral {
 
   // function cb(err), returns undefined, register is optional
   i2cWrite(address, register, buffer, cb) {
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 3) {
       cb = buffer;
@@ -315,7 +296,7 @@ export class I2C extends Peripheral {
   // returns undefined, register is optional
   // Required by J5
   i2cWriteSync(address, register, buffer) {
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       buffer = register;
@@ -335,7 +316,7 @@ export class I2C extends Peripheral {
 
   // function cb(err), returns undefined, register is optional
   writeByte(address, register, byte, cb) {
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 3) {
       cb = byte;
@@ -358,7 +339,7 @@ export class I2C extends Peripheral {
   // returns undefined, register is optional
   // Required by J5
   writeByteSync(address, register, byte) {
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       byte = register;
@@ -378,9 +359,7 @@ export class I2C extends Peripheral {
 
   // function cb(err), returns undefined, register is optional
   writeWord(address, register, word, cb) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 3) {
       cb = word;
@@ -394,7 +373,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      buffer = new Buffer(2);
+      var buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
       this[getDevice](address).i2cWrite(address, buffer.length, buffer, cb);
     } else {
@@ -404,9 +383,7 @@ export class I2C extends Peripheral {
 
   // returns undefined, register is optional
   writeWordSync(address, register, word) {
-    var buffer;
-
-    checkAlive(this.alive);
+    this[checkAlive]();
 
     if (arguments.length === 2) {
       word = register;
@@ -418,7 +395,7 @@ export class I2C extends Peripheral {
     checkWord(word);
 
     if (register === undefined) {
-      buffer = new Buffer(2);
+      var buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
       this[getDevice](address).i2cWriteSync(address, buffer.length, buffer);
     } else {
