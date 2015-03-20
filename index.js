@@ -92,8 +92,12 @@ var getDevice = '__r$396836_2$__';
 
 export class I2C extends Peripheral {
   constructor(options) {
-    options = options || {};
-    super(options.pins || [ 'SDA0', 'SCL0' ]);
+    var pins = options;
+    if (!Array.isArray(pins)) {
+      options = options || {};
+      pins = options.pins || [ 'SDA0', 'SCL0' ];
+    }
+    super(pins);
 
     Object.defineProperties(this, {
       [devices]: {
@@ -106,8 +110,8 @@ export class I2C extends Peripheral {
   }
 
   destroy() {
-    this[devices].forEach(function (device) {
-      device.closeSync();
+    this[devices].forEach(device => {
+      device.closeSync()
     });
 
     this[devices] = [];
@@ -202,7 +206,7 @@ export class I2C extends Peripheral {
 
     if (register === undefined) {
       var buffer = new Buffer(1);
-      this[getDevice](address).i2cRead(address, buffer.length, buffer, function (err) {
+      this[getDevice](address).i2cRead(address, buffer.length, buffer, err => {
         if (err) {
           return cb(err);
         }
@@ -244,7 +248,7 @@ export class I2C extends Peripheral {
 
     if (register === undefined) {
       var buffer = new Buffer(2);
-      this[getDevice](address).i2cRead(address, buffer.length, buffer, function (err) {
+      this[getDevice](address).i2cRead(address, buffer.length, buffer, err => {
         if (err) {
           return cb(err);
         }
