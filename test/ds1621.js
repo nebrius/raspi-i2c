@@ -29,14 +29,14 @@ function readWriteBlockNoRegister() {
   var cmdGetTL = new Buffer([CMD_ACCESS_TL]);
   var undef;
 
-  undef = i2c.i2cWrite(DS1621_ADDR, cmdSetTL, function (err) {
+  undef = i2c.write(DS1621_ADDR, cmdSetTL, function (err) {
     assert(!err, 'i2cWrite can\'t write 27 to tl');
 
     waitForWrite(function () {
-      undef = i2c.i2cWrite(DS1621_ADDR, cmdGetTL, function (err) {
+      undef = i2c.write(DS1621_ADDR, cmdGetTL, function (err) {
         assert(!err, 'i2cWrite can\'t write access tl command');
 
-        undef = i2c.i2cRead(DS1621_ADDR, 2, function (err, tl) {
+        undef = i2c.read(DS1621_ADDR, 2, function (err, tl) {
           assert(!err, 'i2cRead can\'t read 27 from tl');
           assert.strictEqual(tl.length, 2, 'expected i2cRead to read 2 bytes');
           assert.strictEqual(tl.readUInt16LE(0), 27, 'expected i2cRead to read value 27');
@@ -63,11 +63,11 @@ function readWriteBlock() {
   var undef;
 
   tlbuf.writeUInt16LE(26, 0);
-  undef = i2c.i2cWrite(DS1621_ADDR, CMD_ACCESS_TL, tlbuf, function (err) {
+  undef = i2c.write(DS1621_ADDR, CMD_ACCESS_TL, tlbuf, function (err) {
     assert(!err, 'i2cWrite can\'t write 26 to tl');
 
     waitForWrite(function () {
-      undef = i2c.i2cRead(DS1621_ADDR, CMD_ACCESS_TL, 2, function (err, newtl) {
+      undef = i2c.read(DS1621_ADDR, CMD_ACCESS_TL, 2, function (err, newtl) {
         assert(!err, 'i2cRead can\'t read 26 from tl');
         assert.strictEqual(newtl.length, 2, 'expected i2cRead to read 2 bytes');
         assert.strictEqual(newtl.readUInt16LE(0), 26, 'expected i2cRead to read value 26');

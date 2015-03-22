@@ -25,14 +25,14 @@ function readWriteBlockNoRegister() {
   var tl;
   var undef;
 
-  undef = i2c.i2cWriteSync(DS1621_ADDR, cmdSetTL);
+  undef = i2c.writeSync(DS1621_ADDR, cmdSetTL);
   assert.strictEqual(undef, undefined, 'expected i2cWriteSync to return undefined');
   waitForWrite();
 
-  undef = i2c.i2cWriteSync(DS1621_ADDR, cmdGetTL);
+  undef = i2c.writeSync(DS1621_ADDR, cmdGetTL);
   assert.strictEqual(undef, undefined, 'expected i2cWriteSync to return undefined');
 
-  tl = i2c.i2cReadSync(DS1621_ADDR, 2);
+  tl = i2c.readSync(DS1621_ADDR, 2);
   assert.strictEqual(tl.length, 2, 'expected i2cReadSync to read 2 bytes');
   assert.strictEqual(tl.readUInt16LE(0), 27, 'expected i2cReadSync to read value 27');
 }
@@ -45,11 +45,11 @@ function readWriteBlock() {
   var undef;
 
   tlbuf.writeUInt16LE(26, 0);
-  undef = i2c.i2cWriteSync(DS1621_ADDR, CMD_ACCESS_TL, tlbuf);
+  undef = i2c.writeSync(DS1621_ADDR, CMD_ACCESS_TL, tlbuf);
   assert.strictEqual(undef, undefined, 'expected i2cWriteSync to return undefined');
   waitForWrite();
 
-  newtl = i2c.i2cReadSync(DS1621_ADDR, CMD_ACCESS_TL, 2);
+  newtl = i2c.readSync(DS1621_ADDR, CMD_ACCESS_TL, 2);
   assert.strictEqual(newtl.length, 2, 'expected i2cReadSync to read 2 bytes');
   assert.strictEqual(newtl.readUInt16LE(0), 26, 'expected i2cReadSync to read value 26');
 }

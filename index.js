@@ -138,7 +138,7 @@ export class I2C extends Peripheral {
 
   // function cb(err, buffer), returns undefined, register is optional
   // Required by J5
-  i2cRead(address, register, length, cb) {
+  read(address, register, length, cb) {
     this[checkAlive]();
 
     if (arguments.length === 3) {
@@ -168,7 +168,7 @@ export class I2C extends Peripheral {
   }
 
   // Returns a buffer, register is optional
-  i2cReadSync(address, register, length) {
+  readSync(address, register, length) {
     this[checkAlive]();
 
     if (arguments.length === 2) {
@@ -276,7 +276,7 @@ export class I2C extends Peripheral {
   }
 
   // function cb(err), returns undefined, register is optional
-  i2cWrite(address, register, buffer, cb) {
+  write(address, register, buffer, cb) {
     this[checkAlive]();
 
     if (arguments.length === 3) {
@@ -299,7 +299,7 @@ export class I2C extends Peripheral {
 
   // returns undefined, register is optional
   // Required by J5
-  i2cWriteSync(address, register, buffer) {
+  writeSync(address, register, buffer) {
     this[checkAlive]();
 
     if (arguments.length === 2) {

@@ -39,7 +39,7 @@ function invalidRegister() {
 function invalidLength() {
   assert.throws(
     function () {
-      i2c.i2cReadSync(DS1621_ADDR, CMD_ACCESS_CONFIG, INVALID_LENGTH);
+      i2c.readSync(DS1621_ADDR, CMD_ACCESS_CONFIG, INVALID_LENGTH);
     },
     /Invalid I2C length 33. Valid lengths are 0 through 32./
   );
@@ -48,7 +48,7 @@ function invalidLength() {
 function invalidCallback() {
   assert.throws(
     function () {
-      i2c.i2cRead(DS1621_ADDR, CMD_ACCESS_CONFIG, 2, INVALID_CALLBACK);
+      i2c.read(DS1621_ADDR, CMD_ACCESS_CONFIG, 2, INVALID_CALLBACK);
     },
     /Invalid I2C callback This is a string, not a callback/
   );
@@ -57,7 +57,7 @@ function invalidCallback() {
 function invalidBuffer() {
   assert.throws(
     function () {
-      i2c.i2cWriteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, INVALID_BUFFER);
+      i2c.writeSync(DS1621_ADDR, CMD_ACCESS_CONFIG, INVALID_BUFFER);
     },
     /Invalid I2C buffer 123456789. Valid lengths are 0 through 32./
   );
