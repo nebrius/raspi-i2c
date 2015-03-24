@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2014 Bryan Hughes <bryan@theoreticalideations.com> (http://theoreticalideations.com)
+Copyright (c) 2015 Bryan Hughes <bryan@theoreticalideations.com> (http://theoreticalideations.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -136,8 +136,6 @@ export class I2C extends Peripheral {
     return device;
   }
 
-  // function cb(err, buffer), returns undefined, register is optional
-  // Required by J5
   read(address, register, length, cb) {
     this[checkAlive]();
 
@@ -167,7 +165,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // Returns a buffer, register is optional
   readSync(address, register, length) {
     this[checkAlive]();
 
@@ -191,7 +188,6 @@ export class I2C extends Peripheral {
     return buffer;
   }
 
-  // function cb(err, value), returns undefined, register is optional
   readByte(address, register, cb) {
     this[checkAlive]();
 
@@ -217,7 +213,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // returns the value, register is optional
   readByteSync(address, register) {
     this[checkAlive]();
 
@@ -233,7 +228,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // function cb(err, value), returns undefined, register is optional
   readWord(address, register, cb) {
     this[checkAlive]();
 
@@ -259,7 +253,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // returns the value, register is optional
   readWordSync(address, register) {
     this[checkAlive]();
 
@@ -275,7 +268,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // function cb(err), returns undefined, register is optional
   write(address, register, buffer, cb) {
     this[checkAlive]();
 
@@ -297,8 +289,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // returns undefined, register is optional
-  // Required by J5
   writeSync(address, register, buffer) {
     this[checkAlive]();
 
@@ -318,7 +308,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // function cb(err), returns undefined, register is optional
   writeByte(address, register, byte, cb) {
     this[checkAlive]();
 
@@ -340,8 +329,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // returns undefined, register is optional
-  // Required by J5
   writeByteSync(address, register, byte) {
     this[checkAlive]();
 
@@ -361,7 +348,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // function cb(err), returns undefined, register is optional
   writeWord(address, register, word, cb) {
     this[checkAlive]();
 
@@ -385,7 +371,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  // returns undefined, register is optional
   writeWordSync(address, register, word) {
     this[checkAlive]();
 

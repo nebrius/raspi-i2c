@@ -6,7 +6,8 @@
   "dependencies": {
     "i2c-bus": "^0.11.0",
     "raspi-board": "2.1.1",
-    "raspi-peripheral": "1.1.1"
+    "raspi-peripheral": "1.1.1",
+    "ini-builder": "^1.0.2"
   },
   "optionalDependencies": {
     "execSync": "^1.0.2"
@@ -18,7 +19,11 @@
     "gulp-sourcemaps": "^1.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "echo \"Enabling I2C at boot time, you may be asked for your password\" && sudo script/enable_i2c.js"
+  },
+  "config": {
+    "unsafe-perm":true
   },
   "repository": {
     "type": "git",
@@ -30,6 +35,10 @@
     "raspberry pi"
   ],
   "author": "Bryan Hughes <bryan@theoreticalideations.com>",
+  "contributors": [
+    { "name": "Bryan Hughes", "email": "bryan@theoreticalideations.com" },
+    { "name": "Brian Cooke", "email": "bdscooke@gmail.com" }
+  ],
   "license": "MIT",
   "gypfile": true,
   "bugs": {
