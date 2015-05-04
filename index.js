@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Bryan Hughes <bryan@theoreticalideations.com> (http://theoreticalideations.com)
+Copyright (c) 2015 Bryan Hughes <bryan@theoreticalideations.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -86,7 +86,6 @@ function checkWord(word) {
   }
 }
 
-var checkAlive = '__r$396836_0$__';
 var devices = '__r$396836_1$__';
 var getDevice = '__r$396836_2$__';
 
@@ -119,12 +118,6 @@ export class I2C extends Peripheral {
     super.destroy();
   }
 
-  [checkAlive]() {
-    if (!this.alive) {
-      throw new Error('Attempted to access a destroyed I2C peripheral');
-    }
-  }
-
   [getDevice](address) {
     var device = this[devices][address];
 
@@ -137,7 +130,7 @@ export class I2C extends Peripheral {
   }
 
   read(address, register, length, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 3) {
       cb = length;
@@ -166,7 +159,7 @@ export class I2C extends Peripheral {
   }
 
   readSync(address, register, length) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       length = register;
@@ -189,7 +182,7 @@ export class I2C extends Peripheral {
   }
 
   readByte(address, register, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       cb = register;
@@ -214,7 +207,7 @@ export class I2C extends Peripheral {
   }
 
   readByteSync(address, register) {
-    this[checkAlive]();
+    this.validateAlive();
 
     checkAddress(address);
     checkRegister(register);
@@ -229,7 +222,7 @@ export class I2C extends Peripheral {
   }
 
   readWord(address, register, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       cb = register;
@@ -254,7 +247,7 @@ export class I2C extends Peripheral {
   }
 
   readWordSync(address, register) {
-    this[checkAlive]();
+    this.validateAlive();
 
     checkAddress(address);
     checkRegister(register);
@@ -269,7 +262,7 @@ export class I2C extends Peripheral {
   }
 
   write(address, register, buffer, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 3) {
       cb = buffer;
@@ -290,7 +283,7 @@ export class I2C extends Peripheral {
   }
 
   writeSync(address, register, buffer) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       buffer = register;
@@ -309,7 +302,7 @@ export class I2C extends Peripheral {
   }
 
   writeByte(address, register, byte, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 3) {
       cb = byte;
@@ -330,7 +323,7 @@ export class I2C extends Peripheral {
   }
 
   writeByteSync(address, register, byte) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       byte = register;
@@ -349,7 +342,7 @@ export class I2C extends Peripheral {
   }
 
   writeWord(address, register, word, cb) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 3) {
       cb = word;
@@ -372,7 +365,7 @@ export class I2C extends Peripheral {
   }
 
   writeWordSync(address, register, word) {
-    this[checkAlive]();
+    this.validateAlive();
 
     if (arguments.length === 2) {
       word = register;
