@@ -388,7 +388,7 @@ _Arguments_:
         </tr>
         <tr>
           <td>bytesWritten</td>
-          <td>null | Buffer</td>
+          <td>null | Number</td>
           <td>If no error occurred, the number of bytes written</td>
         </tr>
       </table>
@@ -483,7 +483,7 @@ _Arguments_:
         </tr>
         <tr>
           <td>bytesWritten</td>
-          <td>null | Buffer</td>
+          <td>null | Number</td>
           <td>If no error occurred, the number of bytes written</td>
         </tr>
       </table>
@@ -576,7 +576,7 @@ _Arguments_:
         </tr>
         <tr>
           <td>bytesWritten</td>
-          <td>null | Buffer</td>
+          <td>null | Number</td>
           <td>If no error occurred, the number of bytes written</td>
         </tr>
       </table>
