@@ -1,4 +1,4 @@
-## 1.0.1 (2015-
+## 1.0.2 (2015-5-4)
 
 - Added documentation
 - Updated dependencies and reworked code to use ```validateAlive``` internally.

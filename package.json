@@ -1,6 +1,6 @@
 {
   "name": "raspi-i2c",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provides access to I2C on the Raspberry Pi from Node.js ",
   "main": "lib/index.js",
   "dependencies": {
