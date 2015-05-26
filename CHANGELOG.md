@@ -1,3 +1,8 @@
+## 1.0.3 (2015-5-26)
+
+- Added a default baudrate value to the install script
+- Added notes about the default clock rate being unstable with certain Arduinos
+
 ## 1.0.2 (2015-5-4)
 
 - Added documentation

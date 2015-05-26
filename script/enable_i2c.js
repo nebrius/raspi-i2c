@@ -54,6 +54,15 @@ if (!i2c) {
   changes = true;
 }
 
+var i2c_arm_baudrate = iniBuilder.find(config, ['dtparam', 'i2c_arm_baudrate']);
+if (!i2c_arm_baudrate) {
+  config.push({
+    path: ['dtparam', 'i2c_arm_baudrate'],
+    value: '100000'
+  });
+  changes = true;
+}
+
 if (changes) {
   console.log('Enabled I2C at boot time');
   fs.writeFileSync('/boot/config.txt', iniBuilder.serialize(config));
