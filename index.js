@@ -86,12 +86,12 @@ function checkWord(word) {
   }
 }
 
-var devices = '__r$396836_1$__';
-var getDevice = '__r$396836_2$__';
+const devices = Symbol('devices');
+const getDevice = Symbol('getDevice');
 
 export class I2C extends Peripheral {
   constructor(options) {
-    var pins = options;
+    let pins = options;
     if (!Array.isArray(pins)) {
       options = options || {};
       pins = options.pins || [ 'SDA0', 'SCL0' ];
@@ -110,7 +110,7 @@ export class I2C extends Peripheral {
 
   destroy() {
     this[devices].forEach(device => {
-      device.closeSync()
+      device.closeSync();
     });
 
     this[devices] = [];
@@ -119,7 +119,7 @@ export class I2C extends Peripheral {
   }
 
   [getDevice](address) {
-    var device = this[devices][address];
+    let device = this[devices][address];
 
     if (device === undefined) {
       device = i2c.openSync(getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
@@ -143,13 +143,13 @@ export class I2C extends Peripheral {
     checkLength(length);
     checkCallback(cb);
 
-    var buffer = new Buffer(length);
+    const buffer = new Buffer(length);
     function callback(err) {
       if (err) {
         return cb(err);
       }
       cb(null, buffer);
-    };
+    }
 
     if (register === undefined) {
       this[getDevice](address).i2cRead(address, length, buffer, callback);
@@ -170,7 +170,7 @@ export class I2C extends Peripheral {
     checkRegister(register);
     checkLength(length);
 
-    var buffer = new Buffer(length);
+    const buffer = new Buffer(length);
 
     if (register === undefined) {
       this[getDevice](address).i2cReadSync(address, length, buffer);
@@ -194,7 +194,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      var buffer = new Buffer(1);
+      const buffer = new Buffer(1);
       this[getDevice](address).i2cRead(address, buffer.length, buffer, err => {
         if (err) {
           return cb(err);
@@ -212,13 +212,15 @@ export class I2C extends Peripheral {
     checkAddress(address);
     checkRegister(register);
 
+    let byte;
     if (register === undefined) {
-      var buffer = new Buffer(1);
+      const buffer = new Buffer(1);
       this[getDevice](address).i2cReadSync(address, buffer.length, buffer);
-      return buffer[0];
+      byte = buffer[0];
     } else {
-      return this[getDevice](address).readByteSync(address, register);
+      byte = this[getDevice](address).readByteSync(address, register);
     }
+    return byte;
   }
 
   readWord(address, register, cb) {
@@ -234,7 +236,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      var buffer = new Buffer(2);
+      const buffer = new Buffer(2);
       this[getDevice](address).i2cRead(address, buffer.length, buffer, err => {
         if (err) {
           return cb(err);
@@ -252,13 +254,15 @@ export class I2C extends Peripheral {
     checkAddress(address);
     checkRegister(register);
 
+    let byte;
     if (register === undefined) {
-      var buffer = new Buffer(2);
+      const buffer = new Buffer(2);
       this[getDevice](address).i2cReadSync(address, buffer.length, buffer);
-      return buffer.readUInt16LE(0);
+      byte = buffer.readUInt16LE(0);
     } else {
-      return this[getDevice](address).readWordSync(address, register);
+      byte = this[getDevice](address).readWordSync(address, register);
     }
+    return byte;
   }
 
   write(address, register, buffer, cb) {
@@ -356,7 +360,7 @@ export class I2C extends Peripheral {
     checkCallback(cb);
 
     if (register === undefined) {
-      var buffer = new Buffer(2);
+      const buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
       this[getDevice](address).i2cWrite(address, buffer.length, buffer, cb);
     } else {
@@ -377,7 +381,7 @@ export class I2C extends Peripheral {
     checkWord(word);
 
     if (register === undefined) {
-      var buffer = new Buffer(2);
+      const buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
       this[getDevice](address).i2cWriteSync(address, buffer.length, buffer);
     } else {
