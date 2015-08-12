@@ -1,3 +1,7 @@
+## 1.0.5 (2015-8-10)
+
+- Added a Symbol shim to fix a crash in Node.js 0.10
+
 ## 1.0.4 (2015-7-16)
 
 - Updated dependencies

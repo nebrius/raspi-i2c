@@ -27,6 +27,13 @@ import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
+// Hacky quick Symbol polyfill, since es6-symbol refuses to install with Node 0.10 from http://node-arm.herokuapp.com/
+if (typeof global.Symbol != 'function') {
+  global.Symbol = (name) => {
+    return '__$raspi_symbol_' + name + '_' + Math.round(Math.random() * 0xFFFFFFF) + '$__';
+  };
+}
+
 if (typeof execSync !== 'function') {
   execSync = require('execSync').run;
 }
