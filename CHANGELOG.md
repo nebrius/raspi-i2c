@@ -1,3 +1,7 @@
+## 1.0.6 (2015-9-3)
+
+- Dependency updates to fix a bug with pin aliasing
+
 ## 1.0.5 (2015-8-10)
 
 - Added a Symbol shim to fix a crash in Node.js 0.10
