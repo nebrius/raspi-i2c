@@ -33,7 +33,7 @@
     "no-throw-literal": 2,
     "radix": 2,
     "quotes": [2, "single", "avoid-escape"],
-    "indent": [2, 2],
+    "indent": [2, 2, { "SwitchCase": 1 }],
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "comma-style": [2, "last"],
     "no-multiple-empty-lines": 2,

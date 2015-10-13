@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 import i2c from 'i2c-bus';
-import { execSync } from 'child_process';
+import { execSync as nativeExecSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
@@ -34,6 +34,7 @@ if (typeof global.Symbol != 'function') {
   };
 }
 
+let execSync = nativeExecSync;
 if (typeof execSync !== 'function') {
   execSync = require('execSync').run;
 }
