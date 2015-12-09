@@ -1,3 +1,7 @@
+## 2.1.0 (2015-12-8)
+
+- Updated dependencies to add Raspberry Pi Zero support
+
 ## 2.0.0 (2015-10-21)
 
 - Upgraded i2c-bus to new version that uses NAN 2
