@@ -33,6 +33,9 @@ var config = '';
 try {
   config = fs.readFileSync('/boot/config.txt').toString()
 } catch (e) {
+  if (e.code == 'ENOENT') {
+    console.log('A file will be created at /boot/config.txt');
+  }
 }
 
 config = iniBuilder.parse(config, { commentDelimiter: '#' })
