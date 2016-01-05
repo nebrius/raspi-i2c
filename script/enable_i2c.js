@@ -31,14 +31,14 @@ console.log('Checking if I2C is enabled at boot time');
 var config = '';
 
 try {
-  config = fs.readFileSync('/boot/config.txt').toString()
+  config = fs.readFileSync('/boot/config.txt').toString();
 } catch (e) {
   if (e.code == 'ENOENT') {
     console.log('A file will be created at /boot/config.txt');
   }
 }
 
-config = iniBuilder.parse(config, { commentDelimiter: '#' })
+config = iniBuilder.parse(config, { commentDelimiter: '#' });
 
 var changes = false;
 
