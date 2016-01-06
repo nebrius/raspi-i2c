@@ -27,7 +27,19 @@ var fs = require('fs');
 var iniBuilder = require('ini-builder');
 
 console.log('Checking if I2C is enabled at boot time');
-var config = iniBuilder.parse(fs.readFileSync('/boot/config.txt').toString(), { commentDelimiter: '#' });
+
+var config = '';
+
+try {
+  config = fs.readFileSync('/boot/config.txt').toString();
+} catch (e) {
+  if (e.code == 'ENOENT') {
+    console.log('A file will be created at /boot/config.txt');
+  }
+}
+
+config = iniBuilder.parse(config, { commentDelimiter: '#' });
+
 var changes = false;
 
 var i2c_arm = iniBuilder.find(config, ['dtparam', 'i2c_arm']);

@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "echo \"Enabling I2C at boot time, you may be asked for your password\" && sudo script/enable_i2c.js"
+    "postinstall": "echo \"Enabling I2C at boot time, you may be asked for your password\" && sudo env \"PATH=$PATH\" script/enable_i2c.js"
   },
   "config": {
     "unsafe-perm":true
