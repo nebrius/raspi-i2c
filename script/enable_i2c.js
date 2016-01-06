@@ -34,7 +34,7 @@ try {
   config = fs.readFileSync('/boot/config.txt').toString();
 } catch (e) {
   if (e.code == 'ENOENT') {
-    console.log('A file will be created at /boot/config.txt');
+    console.log('/boot/config.txt does not exist, a new one will be created');
   }
 }
 
