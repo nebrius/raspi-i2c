@@ -11,7 +11,7 @@
 - Upgraded i2c-bus to new version that uses NAN 2
   - POTENTIAL BREAKING CHANGE
   - The API has not changed, but the build requirements have
-  - Make sure you are running Raspbian Jesse because this module no longer builds on stock Raspbian Wheezy
+  - Make sure you are running Raspbian Jessie because this module no longer builds on stock Raspbian Wheezy
   - See https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons for more information
 
 ## 1.1.0 (2015-10-12)
