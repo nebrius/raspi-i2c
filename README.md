@@ -3,13 +3,13 @@ Raspi I2C
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nebrius/raspi-io?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Raspi I2C is part of the [Raspi.js suite](https://github.com/bryan-m-hughes/raspi) that provides access to the hardware I2C on pins 3 (SDA0) and 5 (SCL0).
+Raspi I2C is part of the [Raspi.js suite](https://github.com/nebrius/raspi) that provides access to the hardware I2C on pins 3 (SDA0) and 5 (SCL0).
 
 If you have a bug report, feature request, or wish to contribute code, please be sure to check out the [Contributing Guide](blob/master/CONTRIBUTING.md).
 
 ## Installation
 
-First, be sure that you have installed [raspi](https://github.com/bryan-m-hughes/raspi).
+First, be sure that you have installed [raspi](https://github.com/nebrius/raspi).
 
 Install with NPM:
 
@@ -58,7 +58,7 @@ Finally, if you try to access a device that doesn't exist, you will get an error
 
 ### new I2C(pins)
 
-Instantiates a new I2C instance on the given pins. Note that I2C is limited to only 1 pair of pins on all current models of the Raspberry Pi. Check the [wiring information wiki](https://github.com/bryan-m-hughes/raspi-io/wiki) for more information.
+Instantiates a new I2C instance on the given pins. Note that I2C is limited to only 1 pair of pins on all current models of the Raspberry Pi. Check the [wiring information wiki](https://github.com/nebrius/raspi-io/wiki) for more information.
 
 _Arguments_:
 
