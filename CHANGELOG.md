@@ -1,3 +1,7 @@
+## 2.3.1 (2016-4-4)
+
+- Forgot to bump the raspi-peripheral dependency in 2.3.0
+
 ## 2.3.0 (2016-4-4)
 
 - Added support for the Raspberry Pi 3 Model B
