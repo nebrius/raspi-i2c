@@ -1,3 +1,7 @@
+## 2.3.0 (2016-4-4)
+
+- Added support for the Raspberry Pi 3 Model B
+
 ## 2.2.0 (2016-1-6)
 
 - Added support for Ubuntu
