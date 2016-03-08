@@ -1,3 +1,7 @@
+## 2.3.2 (2016-3-7)
+
+- Dependency update to add missing Raspberry Pi 3 Model B revision
+
 ## 2.3.1 (2016-4-4)
 
 - Forgot to bump the raspi-peripheral dependency in 2.3.0
