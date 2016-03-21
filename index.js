@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Bryan Hughes <bryan@theoreticalideations.com>
+Copyright (c) 2015 Bryan Hughes <bryan@nebri.us>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,9 @@ THE SOFTWARE.
 */
 
 import i2c from 'i2c-bus';
-import { execSync as nativeExecSync } from 'child_process';
+import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
-
-// Hacky quick Symbol polyfill, since es6-symbol refuses to install with Node 0.10 from http://node-arm.herokuapp.com/
-if (typeof global.Symbol != 'function') {
-  global.Symbol = (name) => {
-    return '__$raspi_symbol_' + name + '_' + Math.round(Math.random() * 0xFFFFFFF) + '$__';
-  };
-}
-
-let execSync = nativeExecSync;
-if (typeof execSync !== 'function') {
-  execSync = require('execSync').run;
-}
 
 function checkAddress(address) {
   if (typeof address !== 'number' || address < 0 || address > 0x7f) {

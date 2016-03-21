@@ -1,3 +1,10 @@
+## 3.0.0 (2016-3-20)
+
+- Dependency update to fix bug
+- New build system
+- Removed execSync and Symbol shims
+  - BREAKING CHANGE: Node 0.10 is no longer supported as a result
+
 ## 2.3.2 (2016-3-7)
 
 - Dependency update to add missing Raspberry Pi 3 Model B revision
