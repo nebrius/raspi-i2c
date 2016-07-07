@@ -1,3 +1,8 @@
+## 3.1.0 (2016-7-7)
+
+- Switched dependency ranges to ^
+- Bumped dependencies to bring in support for a new Raspberry Pi Zero revision
+
 ## 3.0.0 (2016-3-20)
 
 - Dependency update to fix bug
