@@ -37,7 +37,7 @@ There are a few limitations and extra steps to be aware of when using I2C on the
 
 First and foremost, be aware that once you use an I2C pin for GPIO, you _cannot_ use it for I2C again until you _reboot_ your Raspberry Pi! If you run the following [Johnny-Five](http://johnny-five.io/) code which leverages this library under the hood, you will get an exception stating "I2C pins not in I2C mode."
 
-```
+```JavaScript
 var raspi = require('raspi-io');
 var five = require('johnny-five');
 var board = new five.Board({
