@@ -44,8 +44,10 @@ function checkRegister(register) {
   }
 }
 
-function checkLength(length) {
-  if (typeof length !== 'number' || length < 0 || length > 32) {
+function checkLength(length, register) {
+  if (typeof length !== 'number' || length < 0 ||
+      (register !== undefined && length > 32)) {
+    // Enforce 32 byte length limit only for SMBus.
     throw new Error('Invalid I2C length ' + length
       + '. Valid lengths are 0 through 32.'
     );
@@ -58,8 +60,10 @@ function checkCallback(cb) {
   }
 }
 
-function checkBuffer(buffer) {
-  if (!Buffer.isBuffer(buffer) || buffer.length < 0 || buffer.length > 32) {
+function checkBuffer(buffer, register) {
+  if (!Buffer.isBuffer(buffer) || buffer.length < 0 ||
+      (register !== undefined && buffer.length > 32)) {
+    // Enforce 32 byte length limit only for SMBus.
     throw new Error('Invalid I2C buffer ' + buffer
       + '. Valid lengths are 0 through 32.'
     );
@@ -136,7 +140,7 @@ export class I2C extends Peripheral {
 
     checkAddress(address);
     checkRegister(register);
-    checkLength(length);
+    checkLength(length, register);
     checkCallback(cb);
 
     const buffer = new Buffer(length);
@@ -164,7 +168,7 @@ export class I2C extends Peripheral {
 
     checkAddress(address);
     checkRegister(register);
-    checkLength(length);
+    checkLength(length, register);
 
     const buffer = new Buffer(length);
 
@@ -272,7 +276,7 @@ export class I2C extends Peripheral {
 
     checkAddress(address);
     checkRegister(register);
-    checkBuffer(buffer);
+    checkBuffer(buffer, register);
     checkCallback(cb);
 
     if (register === undefined) {
@@ -292,7 +296,7 @@ export class I2C extends Peripheral {
 
     checkAddress(address);
     checkRegister(register);
-    checkBuffer(buffer);
+    checkBuffer(buffer, register);
 
     if (register === undefined) {
       this[getDevice](address).i2cWriteSync(address, buffer.length, buffer);
