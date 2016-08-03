@@ -59,7 +59,7 @@ function checkCallback(cb) {
 }
 
 function checkBuffer(buffer) {
-  if (!Buffer.isBuffer(buffer) || buffer.length <= 0 || buffer.length > 32) {
+  if (!Buffer.isBuffer(buffer) || buffer.length < 0 || buffer.length > 32) {
     throw new Error('Invalid I2C buffer ' + buffer
       + '. Valid lengths are 0 through 32.'
     );
