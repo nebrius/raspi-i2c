@@ -1,3 +1,7 @@
+## 3.1.1 (2016-10-29)
+
+- Updated Dependency
+
 ## 3.1.0 (2016-7-7)
 
 - Switched dependency ranges to ^
