@@ -37,7 +37,8 @@ function checkAddress(address) {
 
 function checkRegister(register) {
   if (register !== undefined &&
-      (typeof register !== 'number' || register < 0 || register > 0xff)) {
+      (typeof register !== 'number' || register < 0 || register > 0xff)
+  ) {
     throw new Error('Invalid I2C register ' + register
       + '. Valid registers are 0 through 0xff.'
     );
@@ -46,7 +47,8 @@ function checkRegister(register) {
 
 function checkLength(length, register) {
   if (typeof length !== 'number' || length < 0 ||
-      (register !== undefined && length > 32)) {
+      (register !== undefined && length > 32)
+  ) {
     // Enforce 32 byte length limit only for SMBus.
     throw new Error('Invalid I2C length ' + length
       + '. Valid lengths are 0 through 32.'
@@ -62,7 +64,8 @@ function checkCallback(cb) {
 
 function checkBuffer(buffer, register) {
   if (!Buffer.isBuffer(buffer) || buffer.length < 0 ||
-      (register !== undefined && buffer.length > 32)) {
+      (register !== undefined && buffer.length > 32)
+  ) {
     // Enforce 32 byte length limit only for SMBus.
     throw new Error('Invalid I2C buffer ' + buffer
       + '. Valid lengths are 0 through 32.'

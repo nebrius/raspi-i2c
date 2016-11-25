@@ -1,3 +1,8 @@
+## 4.0.0 (2016-11-23)
+
+- Removed 32 byte length limitation when reading/writing directly to the bus and not to a register
+  - POTENTIALLY BREAKING CHANGE: if you were relying on the exception being thrown in this situation, you'll need to update your code.
+
 ## 3.1.1 (2016-10-29)
 
 - Updated Dependency
