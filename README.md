@@ -72,8 +72,27 @@ _Arguments_:
   </thead>
   <tr>
     <td>pins (optional)</td>
-    <td>Array</td>
-    <td>The pin numbers or descriptors for the peripheral.</td>
+    <td>Number[] | Object</td>
+    <td>The configuration of the I2C port. If the config is an array of numbers or strings, it is assumed to be the SDA and SCL pins for the peripheral. If it is an object, the following properties are supported:</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="2">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tr>
+          <td>pins</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </td>
   </tr>
 </table>
 
@@ -394,11 +413,6 @@ _Arguments_:
           <td>String | null</td>
           <td>The error, if one occurred, else null</td>
         </tr>
-        <tr>
-          <td>bytesWritten</td>
-          <td>null | Number</td>
-          <td>If no error occurred, the number of bytes written</td>
-        </tr>
       </table>
     </td>
   </tr>
@@ -489,11 +503,6 @@ _Arguments_:
           <td>String | null</td>
           <td>The error, if one occurred, else null</td>
         </tr>
-        <tr>
-          <td>bytesWritten</td>
-          <td>null | Number</td>
-          <td>If no error occurred, the number of bytes written</td>
-        </tr>
       </table>
     </td>
   </tr>
@@ -581,11 +590,6 @@ _Arguments_:
           <td>err</td>
           <td>String | null</td>
           <td>The error, if one occurred, else null</td>
-        </tr>
-        <tr>
-          <td>bytesWritten</td>
-          <td>null | Number</td>
-          <td>If no error occurred, the number of bytes written</td>
         </tr>
       </table>
     </td>

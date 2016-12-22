@@ -1,3 +1,12 @@
+## 5.0.0 (2016-12-21)
+
+- Made all write callbacks optional
+- Normalized read and write callbacks so that error is always null if no error occured
+  - POTENTIALLY BREAKING CHANGE: If you were using `err === undefined` or something similar, this will no longer work
+- Normalized write callbacks so they only take an error argument
+  - POTENTIALLY BREAKING CHANCE: If you were relying on the undocumented extra parameters to the write callback, these will now be `undefined`
+- Converted the project to TypeScript and cleaned up a bunch of odds and end
+
 ## 4.0.0 (2016-11-23)
 
 - Removed 32 byte length limitation when reading/writing directly to the bus and not to a register
