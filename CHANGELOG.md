@@ -1,3 +1,7 @@
+## 5.0.1 (2016-12-21)
+
+- Added missing TypeScript definition package.json entry
+
 ## 5.0.0 (2016-12-21)
 
 - Made all write callbacks optional
