@@ -1,3 +1,7 @@
+## 5.0.3 (2017-22-1)
+
+- Publishing a new version to update the README on npmjs.com. No other changes.
+
 ## 5.0.2 (2016-12-30)
 
 - Added some important documentation to the README that needs to be on npmjs.com

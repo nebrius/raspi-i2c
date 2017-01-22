@@ -17,7 +17,9 @@ Install with NPM:
 npm install raspi-i2c
 ```
 
-**Warning**: this module requires GCC 4.8 or newer. This means that you should be running Raspbian Jessie or newer, released in September of 2015.
+**Warning:** this module requires GCC 4.8 or newer. This means that you should be running Raspbian Jessie or newer, released in September of 2015.
+
+**Note:** this project is written in [TypeScript](http://www.typescriptlang.org/) and includes type definitions in the package.json file. This means that if you want to use it from TypeScript, you don't need to install a separate @types module.
 
 ## Example Usage
 
@@ -38,10 +40,10 @@ There are a few limitations and extra steps to be aware of when using I2C on the
 First and foremost, be aware that once you use an I2C pin for GPIO, you _cannot_ use it for I2C again until you _reboot_ your Raspberry Pi! If you run the following [Johnny-Five](http://johnny-five.io/) code which leverages this library under the hood, you will get an exception stating "I2C pins not in I2C mode."
 
 ```JavaScript
-const raspi = require('raspi-io');
+const Raspi = require('raspi-io');
 const five = require('johnny-five');
 const board = new five.Board({
-  io: new raspi()
+  io: new Raspi()
 });
 
 board.on('ready', () => {
@@ -638,7 +640,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Bryan Hughes bryan@theoreticalideations.com
+Copyright (c) 2015 Bryan Hughes bryan@nebri.us
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
