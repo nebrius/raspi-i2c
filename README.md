@@ -22,11 +22,11 @@ npm install raspi-i2c
 ## Example Usage
 
 ```JavaScript
-var raspi = require('raspi');
-var I2C = require('raspi-i2c').I2C;
+const raspi = require('raspi');
+const I2C = require('raspi-i2c').I2C;
 
-raspi.init(function() {
-  var i2c = new I2C();
+raspi.init(() => {
+  const i2c = new I2C();
   console.log(i2c.readByteSync(0x18)); // Read one byte from the device at address 18
 });
 ```
@@ -38,13 +38,13 @@ There are a few limitations and extra steps to be aware of when using I2C on the
 First and foremost, be aware that once you use an I2C pin for GPIO, you _cannot_ use it for I2C again until you _reboot_ your Raspberry Pi! If you run the following [Johnny-Five](http://johnny-five.io/) code which leverages this library under the hood, you will get an exception stating "I2C pins not in I2C mode."
 
 ```JavaScript
-var raspi = require('raspi-io');
-var five = require('johnny-five');
-var board = new five.Board({
+const raspi = require('raspi-io');
+const five = require('johnny-five');
+const board = new five.Board({
   io: new raspi()
 });
 
-board.on('ready', function() {
+board.on('ready', () => {
   new five.Pin('SDA');
   board.io.i2cWrite(0x18, 0x5, 'hello');
 });
