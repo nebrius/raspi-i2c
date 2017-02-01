@@ -28,6 +28,7 @@ import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
 export interface IConfig {
+  bus?: number;
   pins?: Array<any>;
 }
 
@@ -120,11 +121,12 @@ function getPins(config?: Array<number> | IConfig): Array<any> {
 }
 
 export class I2C extends Peripheral {
-
+  private busNumber: number;
   private devices: Array<I2cBus> = [];
 
   constructor(config?: Array<number> | IConfig) {
     super(getPins(config));
+    this.busNumber = (config.bus !== undefined) ? config.bus : (getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
     execSync('modprobe i2c-dev');
   }
 
@@ -134,14 +136,11 @@ export class I2C extends Peripheral {
     super.destroy();
   }
 
-  private getDevice(address: number, busNumber?: number) {
+  private getDevice(address: number) {
     let device = this.devices[address];
 
     if (device === undefined) {
-      if (busNumber == undefined) {
-        busNumber = getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1;
-      }
-      device = openSync(busNumber);
+      device = openSync(this.busNumber);
       this.devices[address] = device;
     }
 
