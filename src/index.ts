@@ -134,11 +134,14 @@ export class I2C extends Peripheral {
     super.destroy();
   }
 
-  private getDevice(address: number) {
+  private getDevice(address: number, busNumber?: number) {
     let device = this.devices[address];
 
     if (device === undefined) {
-      device = openSync(getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
+      if (busNumber == undefined) {
+        busNumber = getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1;
+      }
+      device = openSync(busNumber);
       this.devices[address] = device;
     }
 
