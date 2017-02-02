@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { Peripheral } from 'raspi-peripheral';
 export interface IConfig {
+    bus?: number;
     pins?: Array<any>;
 }
 export interface IReadCallback {
@@ -10,10 +11,12 @@ export interface IWriteCallback {
     (err: null | Error | string): void;
 }
 export declare class I2C extends Peripheral {
+    private busNumber;
     private devices;
     constructor(config?: Array<number> | IConfig);
     destroy(): void;
-    private getDevice(address);
+    private getDevice(address, busNumber?);
+    configure(options?: any): void;
     read(address: number, length: number, cb: IReadCallback): void;
     read(address: number, register: number, length: number, cb: IReadCallback): void;
     readSync(address: number, length: number): Buffer;

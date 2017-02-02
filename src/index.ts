@@ -126,7 +126,11 @@ export class I2C extends Peripheral {
 
   constructor(config?: Array<number> | IConfig) {
     super(getPins(config));
-    this.busNumber = (config.bus !== undefined) ? config.bus : (getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
+    if (!Array.isArray(config) && typeof config === 'object' && config.bus !== undefined) {
+      this.busNumber = config.bus;
+    } else {
+      this.busNumber = getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1;
+    }
     execSync('modprobe i2c-dev');
   }
 
@@ -136,10 +140,11 @@ export class I2C extends Peripheral {
     super.destroy();
   }
 
-  private getDevice(address: number, busNumber?:number) {
+  private getDevice(address: number, busNumber?: number) {
     let device = this.devices[address];
     if (busNumber === undefined) {
       busNumber = this.busNumber;
+    }
     if (device === undefined) {
       device = openSync(busNumber);
       this.devices[address] = device;
@@ -147,8 +152,8 @@ export class I2C extends Peripheral {
 
     return device;
   }
-    
-  public configure(options?): void {
+
+  public configure(options?: any): void {
     console.log('configure', options);
     if (options && options.address) {
       this.getDevice(options.address, options.busNumber);
