@@ -125,10 +125,11 @@ var I2C = (function (_super) {
     };
     I2C.prototype.getDevice = function (address, busNumber) {
         var device = this.devices[address];
-        if (busNumber === undefined) {
-            busNumber = this.busNumber;
-        }
         if (device === undefined) {
+            if (busNumber === undefined) {
+                busNumber = this.busNumber;
+            }
+            console.log('openSync', address, busNumber);
             device = i2c_bus_1.openSync(busNumber);
             this.devices[address] = device;
         }

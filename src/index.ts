@@ -142,10 +142,12 @@ export class I2C extends Peripheral {
 
   private getDevice(address: number, busNumber?: number) {
     let device = this.devices[address];
-    if (busNumber === undefined) {
-      busNumber = this.busNumber;
-    }
+
     if (device === undefined) {
+      if (busNumber === undefined) {
+        busNumber = this.busNumber;
+      }
+      console.log('openSync', address, busNumber);
       device = openSync(busNumber);
       this.devices[address] = device;
     }
