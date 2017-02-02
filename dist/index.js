@@ -129,16 +129,14 @@ var I2C = (function (_super) {
             if (busNumber === undefined) {
                 busNumber = this.busNumber;
             }
-            console.log('openSync', address, busNumber);
             device = i2c_bus_1.openSync(busNumber);
             this.devices[address] = device;
         }
         return device;
     };
     I2C.prototype.configure = function (options) {
-        console.log('configure', options);
         if (options && options.address) {
-            this.getDevice(options.address, options.busNumber);
+            this.getDevice(options.address, options.bus);
         }
     };
     I2C.prototype.read = function (address, registerOrLength, lengthOrCb, cb) {
