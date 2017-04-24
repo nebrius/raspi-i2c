@@ -22,15 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var i2c_bus_1 = require('i2c-bus');
-var child_process_1 = require('child_process');
-var raspi_peripheral_1 = require('raspi-peripheral');
-var raspi_board_1 = require('raspi-board');
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var i2c_bus_1 = require("i2c-bus");
+var child_process_1 = require("child_process");
+var raspi_peripheral_1 = require("raspi-peripheral");
+var raspi_board_1 = require("raspi-board");
 function checkAddress(address) {
     if (typeof address !== 'number' || address < 0 || address > 0x7f) {
         throw new Error("Invalid I2C address " + address + ". Valid addresses are 0 through 0x7f.");
@@ -107,9 +113,10 @@ function getPins(config) {
 var I2C = (function (_super) {
     __extends(I2C, _super);
     function I2C(config) {
-        _super.call(this, getPins(config));
-        this.devices = [];
+        var _this = _super.call(this, getPins(config)) || this;
+        _this.devices = [];
         child_process_1.execSync('modprobe i2c-dev');
+        return _this;
     }
     I2C.prototype.destroy = function () {
         this.devices.forEach(function (device) { return device.closeSync(); });

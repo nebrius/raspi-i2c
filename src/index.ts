@@ -189,7 +189,7 @@ export class I2C extends Peripheral {
 
     let register: number | undefined;
     if (typeof length === 'undefined') {
-      length = +registerOrLength;
+      length = +<number>registerOrLength;
     } else {
       register = registerOrLength;
       length = +length;

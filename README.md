@@ -17,11 +17,23 @@ Install with NPM:
 npm install raspi-i2c
 ```
 
-**Warning:** this module requires GCC 4.8 or newer. This means that you should be running Raspbian Jessie or newer, released in September of 2015.
-
 **Note:** this project is written in [TypeScript](http://www.typescriptlang.org/) and includes type definitions in the package.json file. This means that if you want to use it from TypeScript, you don't need to install a separate @types module.
 
 ## Example Usage
+
+In TypeScript/ES6:
+
+```TypeScript
+import { init } from 'raspi';
+import [ I2C ] from 'raspi-i2c';
+
+init(() => {
+  const i2c = new I2C();
+  console.log(i2c.readByteSync(0x18)); // Read one byte from the device at address 18
+});
+```
+
+In JavaScript:
 
 ```JavaScript
 const raspi = require('raspi');
