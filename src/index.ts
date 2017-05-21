@@ -346,8 +346,11 @@ export class I2C extends Peripheral {
     let register: number | undefined;
     if (Buffer.isBuffer(registerOrBuffer)) {
       buffer = registerOrBuffer;
-    } else if (!buffer) {
-      throw new Error('Invalid I2C write arguments');
+    } else {
+      if (!buffer) {
+        throw new Error('Invalid I2C write arguments');
+      }
+      register = registerOrBuffer;
     }
 
     checkAddress(address);

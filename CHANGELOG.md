@@ -1,3 +1,7 @@
+## 5.0.4 (2017-5-20)
+
+- Fixed a bug in `writeSync` where we weren't properly swizzling arguments.
+
 ## 5.0.3 (2017-22-1)
 
 - Publishing a new version to update the README on npmjs.com. No other changes.

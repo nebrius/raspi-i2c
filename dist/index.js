@@ -294,8 +294,11 @@ var I2C = (function (_super) {
         if (Buffer.isBuffer(registerOrBuffer)) {
             buffer = registerOrBuffer;
         }
-        else if (!buffer) {
-            throw new Error('Invalid I2C write arguments');
+        else {
+            if (!buffer) {
+                throw new Error('Invalid I2C write arguments');
+            }
+            register = registerOrBuffer;
         }
         checkAddress(address);
         checkRegister(register);
