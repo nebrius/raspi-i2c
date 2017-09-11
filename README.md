@@ -35,7 +35,7 @@ In TypeScript/ES6:
 
 ```TypeScript
 import { init } from 'raspi';
-import [ I2C ] from 'raspi-i2c';
+import { I2C } from 'raspi-i2c';
 
 init(() => {
   const i2c = new I2C();
