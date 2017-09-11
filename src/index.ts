@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Bryan Hughes <bryan@nebri.us>
+Copyright (c) 2014-2017 Bryan Hughes <bryan@nebri.us>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -121,7 +121,7 @@ function getPins(config?: Array<number> | IConfig): Array<any> {
 
 export class I2C extends Peripheral {
 
-  private devices: Array<I2cBus> = [];
+  private _devices: Array<I2cBus> = [];
 
   constructor(config?: Array<number> | IConfig) {
     super(getPins(config));
@@ -129,17 +129,17 @@ export class I2C extends Peripheral {
   }
 
   public destroy() {
-    this.devices.forEach((device) => device.closeSync());
-    this.devices = [];
+    this._devices.forEach((device) => device.closeSync());
+    this._devices = [];
     super.destroy();
   }
 
-  private getDevice(address: number) {
-    let device = this.devices[address];
+  private _getDevice(address: number) {
+    let device = this._devices[address];
 
     if (device === undefined) {
       device = openSync(getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
-      this.devices[address] = device;
+      this._devices[address] = device;
     }
 
     return device;
@@ -176,9 +176,9 @@ export class I2C extends Peripheral {
     const buffer = new Buffer(length);
 
     if (register === undefined) {
-      this.getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
+      this._getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
     } else {
-      this.getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
+      this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
     }
   }
 
@@ -202,9 +202,9 @@ export class I2C extends Peripheral {
     const buffer = new Buffer(length);
 
     if (register === undefined) {
-      this.getDevice(address).i2cReadSync(address, length, buffer);
+      this._getDevice(address).i2cReadSync(address, length, buffer);
     } else {
-      this.getDevice(address).readI2cBlockSync(address, register, length, buffer);
+      this._getDevice(address).readI2cBlockSync(address, register, length, buffer);
     }
 
     return buffer;
@@ -227,7 +227,7 @@ export class I2C extends Peripheral {
 
     if (register === undefined) {
       const buffer = new Buffer(1);
-      this.getDevice(address).i2cRead(address, buffer.length, buffer, (err) => {
+      this._getDevice(address).i2cRead(address, buffer.length, buffer, (err) => {
         if (err) {
           if (cb) {
             cb(err, null);
@@ -237,7 +237,7 @@ export class I2C extends Peripheral {
         }
       });
     } else {
-      this.getDevice(address).readByte(address, register, createReadCallback(cb));
+      this._getDevice(address).readByte(address, register, createReadCallback(cb));
     }
   }
 
@@ -250,10 +250,10 @@ export class I2C extends Peripheral {
     let byte: number;
     if (register === undefined) {
       const buffer = new Buffer(1);
-      this.getDevice(address).i2cReadSync(address, buffer.length, buffer);
+      this._getDevice(address).i2cReadSync(address, buffer.length, buffer);
       byte = buffer[0];
     } else {
-      byte = this.getDevice(address).readByteSync(address, register);
+      byte = this._getDevice(address).readByteSync(address, register);
     }
     return byte;
   }
@@ -274,7 +274,7 @@ export class I2C extends Peripheral {
 
     if (register === undefined) {
       const buffer = new Buffer(2);
-      this.getDevice(address).i2cRead(address, buffer.length, buffer, (err) => {
+      this._getDevice(address).i2cRead(address, buffer.length, buffer, (err) => {
         if (cb) {
           if (err) {
             return cb(err, null);
@@ -283,7 +283,7 @@ export class I2C extends Peripheral {
         }
       });
     } else {
-      this.getDevice(address).readWord(address, register, createReadCallback(cb));
+      this._getDevice(address).readWord(address, register, createReadCallback(cb));
     }
   }
 
@@ -296,10 +296,10 @@ export class I2C extends Peripheral {
     let byte: number;
     if (register === undefined) {
       const buffer = new Buffer(2);
-      this.getDevice(address).i2cReadSync(address, buffer.length, buffer);
+      this._getDevice(address).i2cReadSync(address, buffer.length, buffer);
       byte = buffer.readUInt16LE(0);
     } else {
-      byte = this.getDevice(address).readWordSync(address, register);
+      byte = this._getDevice(address).readWordSync(address, register);
     }
     return byte;
   }
@@ -332,9 +332,9 @@ export class I2C extends Peripheral {
     checkBuffer(buffer, !!register);
 
     if (register === undefined) {
-      this.getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
+      this._getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
     } else {
-      this.getDevice(address).writeI2cBlock(address, register, buffer.length, buffer, createWriteCallback(cb));
+      this._getDevice(address).writeI2cBlock(address, register, buffer.length, buffer, createWriteCallback(cb));
     }
   }
 
@@ -358,9 +358,9 @@ export class I2C extends Peripheral {
     checkBuffer(buffer, !!register);
 
     if (register === undefined) {
-      this.getDevice(address).i2cWriteSync(address, buffer.length, buffer);
+      this._getDevice(address).i2cWriteSync(address, buffer.length, buffer);
     } else {
-      this.getDevice(address).writeI2cBlockSync(address, register, buffer.length, buffer);
+      this._getDevice(address).writeI2cBlockSync(address, register, buffer.length, buffer);
     }
   }
 
@@ -389,9 +389,9 @@ export class I2C extends Peripheral {
     checkByte(byte);
 
     if (register === undefined) {
-      this.getDevice(address).i2cWrite(address, 1, new Buffer([byte]), createWriteCallback(cb));
+      this._getDevice(address).i2cWrite(address, 1, new Buffer([byte]), createWriteCallback(cb));
     } else {
-      this.getDevice(address).writeByte(address, register, byte, createWriteCallback(cb));
+      this._getDevice(address).writeByte(address, register, byte, createWriteCallback(cb));
     }
   }
 
@@ -412,9 +412,9 @@ export class I2C extends Peripheral {
     checkByte(byte);
 
     if (register === undefined) {
-      this.getDevice(address).i2cWriteSync(address, 1, new Buffer([byte]));
+      this._getDevice(address).i2cWriteSync(address, 1, new Buffer([byte]));
     } else {
-      this.getDevice(address).writeByteSync(address, register, byte);
+      this._getDevice(address).writeByteSync(address, register, byte);
     }
   }
 
@@ -447,9 +447,9 @@ export class I2C extends Peripheral {
     if (register === undefined) {
       const buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
-      this.getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
+      this._getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
     } else {
-      this.getDevice(address).writeWord(address, register, word, createWriteCallback(cb));
+      this._getDevice(address).writeWord(address, register, word, createWriteCallback(cb));
     }
   }
 
@@ -472,9 +472,9 @@ export class I2C extends Peripheral {
     if (register === undefined) {
       const buffer = new Buffer(2);
       buffer.writeUInt16LE(word, 0);
-      this.getDevice(address).i2cWriteSync(address, buffer.length, buffer);
+      this._getDevice(address).i2cWriteSync(address, buffer.length, buffer);
     } else {
-      this.getDevice(address).writeWordSync(address, register, word);
+      this._getDevice(address).writeWordSync(address, register, word);
     }
   }
 }

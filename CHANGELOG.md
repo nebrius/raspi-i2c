@@ -1,3 +1,12 @@
+## 6.0.0 (2017-
+
+- POTENTIALLY BREAKING CHANGE: renamed the following private properties to begin with an underscore because I just learned TypeScript doesn't do anything to hide private properties. Don't use these properties, changes may not be semver-major next time.
+    - `I2C.devices` -> `I2C._devices`
+    - `I2C.getDevice` -> `I2C._getDevice`
+- BREAKING CHANGE: dropped support for Node.js < 4.0.0, and now enforce it via package.json "engines" field.
+- SORT OF BREAKING-ISH CHANGE: dropped support for attempting to install on non-arm platforms via package.json's "cpu" field.
+    - Attempting to install this on a non-Raspberry Pi platform before gave a bunch of obtuse errors, so this doesn't _actually_ change the ability to install raspi-i2c, but does make it fail earlier and harder.
+
 ## 5.0.4 (2017-5-20)
 
 - Fixed a bug in `writeSync` where we weren't properly swizzling arguments.

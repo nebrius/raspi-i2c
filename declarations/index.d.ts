@@ -10,10 +10,10 @@ export interface IWriteCallback {
     (err: null | Error | string): void;
 }
 export declare class I2C extends Peripheral {
-    private devices;
+    private _devices;
     constructor(config?: Array<number> | IConfig);
     destroy(): void;
-    private getDevice(address);
+    private _getDevice(address);
     read(address: number, length: number, cb: IReadCallback): void;
     read(address: number, register: number, length: number, cb: IReadCallback): void;
     readSync(address: number, length: number): Buffer;

@@ -1,20 +1,27 @@
 {
   "name": "raspi-i2c",
-  "version": "5.0.4",
+  "version": "6.0.0",
   "description": "Provides access to I2C on the Raspberry Pi from Node.js ",
   "main": "dist/index.js",
   "types": "./declarations/index.d.ts",
   "dependencies": {
     "i2c-bus": "^1.2.1",
     "ini-builder": "^1.0.3",
-    "raspi-board": "^4.2.0",
-    "raspi-peripheral": "^1.6.4"
+    "raspi-board": "^5.0.1",
+    "raspi-peripheral": "^2.0.1"
   },
   "devDependencies": {
-    "@types/i2c-bus": "^1.0.3",
-    "tslint": "^5.1.0",
-    "typescript": "^2.2.2"
+    "@types/node": "^8.0.28",
+    "@types/i2c-bus": "^1.0.11",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
   },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "cpu": [
+    "arm"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "echo \"Enabling I2C at boot time, you may be asked for your password\" && sudo env \"PATH=$PATH\" script/enable_i2c.js",

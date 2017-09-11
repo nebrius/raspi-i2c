@@ -1,7 +1,8 @@
+"use strict";
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Bryan Hughes <bryan@nebri.us>
+Copyright (c) 2014-2017 Bryan Hughes <bryan@nebri.us>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +22,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -110,24 +110,24 @@ function getPins(config) {
     }
     return pins;
 }
-var I2C = (function (_super) {
+var I2C = /** @class */ (function (_super) {
     __extends(I2C, _super);
     function I2C(config) {
         var _this = _super.call(this, getPins(config)) || this;
-        _this.devices = [];
+        _this._devices = [];
         child_process_1.execSync('modprobe i2c-dev');
         return _this;
     }
     I2C.prototype.destroy = function () {
-        this.devices.forEach(function (device) { return device.closeSync(); });
-        this.devices = [];
+        this._devices.forEach(function (device) { return device.closeSync(); });
+        this._devices = [];
         _super.prototype.destroy.call(this);
     };
-    I2C.prototype.getDevice = function (address) {
-        var device = this.devices[address];
+    I2C.prototype._getDevice = function (address) {
+        var device = this._devices[address];
         if (device === undefined) {
             device = i2c_bus_1.openSync(raspi_board_1.getBoardRevision() === raspi_board_1.VERSION_1_MODEL_B_REV_1 ? 0 : 1);
-            this.devices[address] = device;
+            this._devices[address] = device;
         }
         return device;
     };
@@ -153,10 +153,10 @@ var I2C = (function (_super) {
         checkCallback(cb);
         var buffer = new Buffer(length);
         if (register === undefined) {
-            this.getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
+            this._getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
         }
         else {
-            this.getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
+            this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
         }
     };
     I2C.prototype.readSync = function (address, registerOrLength, length) {
@@ -174,10 +174,10 @@ var I2C = (function (_super) {
         checkLength(length, !!register);
         var buffer = new Buffer(length);
         if (register === undefined) {
-            this.getDevice(address).i2cReadSync(address, length, buffer);
+            this._getDevice(address).i2cReadSync(address, length, buffer);
         }
         else {
-            this.getDevice(address).readI2cBlockSync(address, register, length, buffer);
+            this._getDevice(address).readI2cBlockSync(address, register, length, buffer);
         }
         return buffer;
     };
@@ -193,7 +193,7 @@ var I2C = (function (_super) {
         checkCallback(cb);
         if (register === undefined) {
             var buffer_1 = new Buffer(1);
-            this.getDevice(address).i2cRead(address, buffer_1.length, buffer_1, function (err) {
+            this._getDevice(address).i2cRead(address, buffer_1.length, buffer_1, function (err) {
                 if (err) {
                     if (cb) {
                         cb(err, null);
@@ -205,7 +205,7 @@ var I2C = (function (_super) {
             });
         }
         else {
-            this.getDevice(address).readByte(address, register, createReadCallback(cb));
+            this._getDevice(address).readByte(address, register, createReadCallback(cb));
         }
     };
     I2C.prototype.readByteSync = function (address, register) {
@@ -215,11 +215,11 @@ var I2C = (function (_super) {
         var byte;
         if (register === undefined) {
             var buffer = new Buffer(1);
-            this.getDevice(address).i2cReadSync(address, buffer.length, buffer);
+            this._getDevice(address).i2cReadSync(address, buffer.length, buffer);
             byte = buffer[0];
         }
         else {
-            byte = this.getDevice(address).readByteSync(address, register);
+            byte = this._getDevice(address).readByteSync(address, register);
         }
         return byte;
     };
@@ -234,7 +234,7 @@ var I2C = (function (_super) {
         checkCallback(cb);
         if (register === undefined) {
             var buffer_2 = new Buffer(2);
-            this.getDevice(address).i2cRead(address, buffer_2.length, buffer_2, function (err) {
+            this._getDevice(address).i2cRead(address, buffer_2.length, buffer_2, function (err) {
                 if (cb) {
                     if (err) {
                         return cb(err, null);
@@ -244,7 +244,7 @@ var I2C = (function (_super) {
             });
         }
         else {
-            this.getDevice(address).readWord(address, register, createReadCallback(cb));
+            this._getDevice(address).readWord(address, register, createReadCallback(cb));
         }
     };
     I2C.prototype.readWordSync = function (address, register) {
@@ -254,11 +254,11 @@ var I2C = (function (_super) {
         var byte;
         if (register === undefined) {
             var buffer = new Buffer(2);
-            this.getDevice(address).i2cReadSync(address, buffer.length, buffer);
+            this._getDevice(address).i2cReadSync(address, buffer.length, buffer);
             byte = buffer.readUInt16LE(0);
         }
         else {
-            byte = this.getDevice(address).readWordSync(address, register);
+            byte = this._getDevice(address).readWordSync(address, register);
         }
         return byte;
     };
@@ -282,10 +282,10 @@ var I2C = (function (_super) {
         checkRegister(register);
         checkBuffer(buffer, !!register);
         if (register === undefined) {
-            this.getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
+            this._getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
         }
         else {
-            this.getDevice(address).writeI2cBlock(address, register, buffer.length, buffer, createWriteCallback(cb));
+            this._getDevice(address).writeI2cBlock(address, register, buffer.length, buffer, createWriteCallback(cb));
         }
     };
     I2C.prototype.writeSync = function (address, registerOrBuffer, buffer) {
@@ -304,10 +304,10 @@ var I2C = (function (_super) {
         checkRegister(register);
         checkBuffer(buffer, !!register);
         if (register === undefined) {
-            this.getDevice(address).i2cWriteSync(address, buffer.length, buffer);
+            this._getDevice(address).i2cWriteSync(address, buffer.length, buffer);
         }
         else {
-            this.getDevice(address).writeI2cBlockSync(address, register, buffer.length, buffer);
+            this._getDevice(address).writeI2cBlockSync(address, register, buffer.length, buffer);
         }
     };
     I2C.prototype.writeByte = function (address, registerOrByte, byteOrCb, cb) {
@@ -326,10 +326,10 @@ var I2C = (function (_super) {
         checkRegister(register);
         checkByte(byte);
         if (register === undefined) {
-            this.getDevice(address).i2cWrite(address, 1, new Buffer([byte]), createWriteCallback(cb));
+            this._getDevice(address).i2cWrite(address, 1, new Buffer([byte]), createWriteCallback(cb));
         }
         else {
-            this.getDevice(address).writeByte(address, register, byte, createWriteCallback(cb));
+            this._getDevice(address).writeByte(address, register, byte, createWriteCallback(cb));
         }
     };
     I2C.prototype.writeByteSync = function (address, registerOrByte, byte) {
@@ -345,10 +345,10 @@ var I2C = (function (_super) {
         checkRegister(register);
         checkByte(byte);
         if (register === undefined) {
-            this.getDevice(address).i2cWriteSync(address, 1, new Buffer([byte]));
+            this._getDevice(address).i2cWriteSync(address, 1, new Buffer([byte]));
         }
         else {
-            this.getDevice(address).writeByteSync(address, register, byte);
+            this._getDevice(address).writeByteSync(address, register, byte);
         }
     };
     I2C.prototype.writeWord = function (address, registerOrWord, wordOrCb, cb) {
@@ -372,10 +372,10 @@ var I2C = (function (_super) {
         if (register === undefined) {
             var buffer = new Buffer(2);
             buffer.writeUInt16LE(word, 0);
-            this.getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
+            this._getDevice(address).i2cWrite(address, buffer.length, buffer, createWriteCallback(cb));
         }
         else {
-            this.getDevice(address).writeWord(address, register, word, createWriteCallback(cb));
+            this._getDevice(address).writeWord(address, register, word, createWriteCallback(cb));
         }
     };
     I2C.prototype.writeWordSync = function (address, registerOrWord, word) {
@@ -393,10 +393,10 @@ var I2C = (function (_super) {
         if (register === undefined) {
             var buffer = new Buffer(2);
             buffer.writeUInt16LE(word, 0);
-            this.getDevice(address).i2cWriteSync(address, buffer.length, buffer);
+            this._getDevice(address).i2cWriteSync(address, buffer.length, buffer);
         }
         else {
-            this.getDevice(address).writeWordSync(address, register, word);
+            this._getDevice(address).writeWordSync(address, register, word);
         }
     };
     return I2C;
