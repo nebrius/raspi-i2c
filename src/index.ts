@@ -27,10 +27,6 @@ import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
-export interface IConfig {
-  pins?: Array<any>;
-}
-
 export interface IReadCallback {
   (err: null | Error | string, data: null | Buffer | number): void;
 }
@@ -107,24 +103,12 @@ function createWriteCallback(suppliedCallback?: IWriteCallback): any {
   };
 }
 
-function getPins(config?: Array<number> | IConfig): Array<any> {
-    let pins: Array<any>;
-    if (Array.isArray(config)) {
-      pins = config;
-    } else if (typeof config === 'object' && Array.isArray(config.pins)) {
-      pins = config.pins;
-    } else {
-      pins = [ 'SDA0', 'SCL0' ];
-    }
-    return pins;
-}
-
 export class I2C extends Peripheral {
 
   private _devices: Array<I2cBus> = [];
 
-  constructor(config?: Array<number> | IConfig) {
-    super(getPins(config));
+  constructor() {
+    super([ 'SDA0', 'SCL0' ]);
     execSync('modprobe i2c-dev');
   }
 

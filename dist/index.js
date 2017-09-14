@@ -97,23 +97,10 @@ function createWriteCallback(suppliedCallback) {
         }
     };
 }
-function getPins(config) {
-    var pins;
-    if (Array.isArray(config)) {
-        pins = config;
-    }
-    else if (typeof config === 'object' && Array.isArray(config.pins)) {
-        pins = config.pins;
-    }
-    else {
-        pins = ['SDA0', 'SCL0'];
-    }
-    return pins;
-}
 var I2C = /** @class */ (function (_super) {
     __extends(I2C, _super);
-    function I2C(config) {
-        var _this = _super.call(this, getPins(config)) || this;
+    function I2C() {
+        var _this = _super.call(this, ['SDA0', 'SCL0']) || this;
         _this._devices = [];
         child_process_1.execSync('modprobe i2c-dev');
         return _this;

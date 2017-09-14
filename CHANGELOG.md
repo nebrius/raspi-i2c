@@ -1,3 +1,9 @@
+## 6.1.0 (2017-9-15)
+
+- Removed logic for parsing pin information passed to the constructor
+    - Normally this would be a breaking change, but it was already broken and the current behavior does nothing anyways, meaning there isn't _actually_ a change in behavior. Funny that.
+    - Eventually, I want to rework this to provide support for multiple busses.
+
 ## 6.0.0 (2017-9-12)
 
 - POTENTIALLY BREAKING CHANGE: renamed the following private properties to begin with an underscore because I just learned TypeScript doesn't do anything to hide private properties. Don't use these properties, changes may not be semver-major next time.
