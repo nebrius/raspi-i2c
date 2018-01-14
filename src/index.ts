@@ -27,13 +27,9 @@ import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
-export interface IReadCallback {
-  (err: null | Error | string, data: null | Buffer | number): void;
-}
+export type IReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
 
-export interface IWriteCallback {
-  (err: null | Error | string): void;
-}
+export type IWriteCallback = (err: null | Error | string) => void;
 
 function checkAddress(address: any) {
   if (typeof address !== 'number' || address < 0 || address > 0x7f) {
@@ -166,8 +162,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  public readSync(address: number, length: number): Buffer;
-  public readSync(address: number, register: number, length: number): Buffer;
   public readSync(address: number, registerOrLength: number | undefined, length?: number): Buffer {
     this.validateAlive();
 
@@ -379,8 +373,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  public writeByteSync(address: number, byte: number): void;
-  public writeByteSync(address: number, register: number, byte: number): void;
   public writeByteSync(address: number, registerOrByte: number, byte?: number): void {
     this.validateAlive();
 
@@ -437,8 +429,6 @@ export class I2C extends Peripheral {
     }
   }
 
-  public writeWordSync(address: number, word: number): void;
-  public writeWordSync(address: number, register: number, word: number): void;
   public writeWordSync(address: number, registerOrWord: number, word?: number): void {
     this.validateAlive();
 

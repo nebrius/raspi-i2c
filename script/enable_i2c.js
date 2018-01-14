@@ -24,6 +24,13 @@ THE SOFTWARE.
 */
 
 var fs = require('fs');
+
+// Quick and dirty check to see if we're on a Raspberry Pi or not
+if (!fs.existsSync('/proc/cpuinfo')) {
+  console.warn('not on a Raspberry Pi, skipping installation');
+  process.exit(0);
+}
+
 var iniBuilder = require('ini-builder');
 
 console.log('Checking if I2C is enabled at boot time');

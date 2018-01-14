@@ -1,11 +1,7 @@
 /// <reference types="node" />
 import { Peripheral } from 'raspi-peripheral';
-export interface IReadCallback {
-    (err: null | Error | string, data: null | Buffer | number): void;
-}
-export interface IWriteCallback {
-    (err: null | Error | string): void;
-}
+export declare type IReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
+export declare type IWriteCallback = (err: null | Error | string) => void;
 export declare class I2C extends Peripheral {
     private _devices;
     constructor();
@@ -13,8 +9,7 @@ export declare class I2C extends Peripheral {
     private _getDevice(address);
     read(address: number, length: number, cb: IReadCallback): void;
     read(address: number, register: number, length: number, cb: IReadCallback): void;
-    readSync(address: number, length: number): Buffer;
-    readSync(address: number, register: number, length: number): Buffer;
+    readSync(address: number, registerOrLength: number | undefined, length?: number): Buffer;
     readByte(address: number, cb: IReadCallback): void;
     readByte(address: number, register: number, cb: IReadCallback): void;
     readByteSync(address: number, register?: number): number;
@@ -27,10 +22,8 @@ export declare class I2C extends Peripheral {
     writeSync(address: number, register: number, buffer: Buffer): void;
     writeByte(address: number, byte: number, cb?: IWriteCallback): void;
     writeByte(address: number, register: number, byte: number, cb?: IWriteCallback): void;
-    writeByteSync(address: number, byte: number): void;
-    writeByteSync(address: number, register: number, byte: number): void;
+    writeByteSync(address: number, registerOrByte: number, byte?: number): void;
     writeWord(address: number, word: number, cb?: IWriteCallback): void;
     writeWord(address: number, register: number, word: number, cb?: IWriteCallback): void;
-    writeWordSync(address: number, word: number): void;
-    writeWordSync(address: number, register: number, word: number): void;
+    writeWordSync(address: number, registerOrWord: number, word?: number): void;
 }
