@@ -27,9 +27,9 @@ import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
 
-export type IReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
+export type ReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
 
-export type IWriteCallback = (err: null | Error | string) => void;
+export type WriteCallback = (err: null | Error | string) => void;
 
 function checkAddress(address: any) {
   if (typeof address !== 'number' || address < 0 || address > 0x7f) {
@@ -77,7 +77,7 @@ function checkCallback(cb: any) {
   }
 }
 
-function createReadCallback(suppliedCallback?: IReadCallback): any {
+function createReadCallback(suppliedCallback?: ReadCallback): any {
   return function(err: any, resultOrBytesRead: any, result?: any) {
     if (suppliedCallback) {
       if (err) {
@@ -91,7 +91,7 @@ function createReadCallback(suppliedCallback?: IReadCallback): any {
   };
 }
 
-function createWriteCallback(suppliedCallback?: IWriteCallback): any {
+function createWriteCallback(suppliedCallback?: WriteCallback): any {
   return function(err: any) {
     if (suppliedCallback) {
       suppliedCallback(err || null);
@@ -125,13 +125,13 @@ export class I2C extends Peripheral {
     return device;
   }
 
-  public read(address: number, length: number, cb: IReadCallback): void;
-  public read(address: number, register: number, length: number, cb: IReadCallback): void;
+  public read(address: number, length: number, cb: ReadCallback): void;
+  public read(address: number, register: number, length: number, cb: ReadCallback): void;
   public read(
     address: number,
     registerOrLength: number,
-    lengthOrCb: number | IReadCallback,
-    cb?: IReadCallback
+    lengthOrCb: number | ReadCallback,
+    cb?: ReadCallback
   ): void {
     this.validateAlive();
 
@@ -188,9 +188,9 @@ export class I2C extends Peripheral {
     return buffer;
   }
 
-  public readByte(address: number, cb: IReadCallback): void;
-  public readByte(address: number, register: number, cb: IReadCallback): void;
-  public readByte(address: number, registerOrCb: number | IReadCallback, cb?: IReadCallback): void {
+  public readByte(address: number, cb: ReadCallback): void;
+  public readByte(address: number, register: number, cb: ReadCallback): void;
+  public readByte(address: number, registerOrCb: number | ReadCallback, cb?: ReadCallback): void {
     this.validateAlive();
 
     let register: number | undefined;
@@ -236,9 +236,9 @@ export class I2C extends Peripheral {
     return byte;
   }
 
-  public readWord(address: number, cb: IReadCallback): void;
-  public readWord(address: number, register: number, cb: IReadCallback): void;
-  public readWord(address: number, registerOrCb: number | IReadCallback, cb?: IReadCallback): void {
+  public readWord(address: number, cb: ReadCallback): void;
+  public readWord(address: number, register: number, cb: ReadCallback): void;
+  public readWord(address: number, registerOrCb: number | ReadCallback, cb?: ReadCallback): void {
     this.validateAlive();
 
     let register: number | undefined;
@@ -282,13 +282,13 @@ export class I2C extends Peripheral {
     return byte;
   }
 
-  public write(address: number, buffer: Buffer, cb?: IWriteCallback): void;
-  public write(address: number, register: number, buffer: Buffer, cb?: IWriteCallback): void;
+  public write(address: number, buffer: Buffer, cb?: WriteCallback): void;
+  public write(address: number, register: number, buffer: Buffer, cb?: WriteCallback): void;
   public write(
     address: number,
     registerOrBuffer: number | Buffer,
-    bufferOrCb?: Buffer | IWriteCallback,
-    cb?: IWriteCallback
+    bufferOrCb?: Buffer | WriteCallback,
+    cb?: WriteCallback
   ): void {
     this.validateAlive();
 
@@ -342,13 +342,13 @@ export class I2C extends Peripheral {
     }
   }
 
-  public writeByte(address: number, byte: number, cb?: IWriteCallback): void;
-  public writeByte(address: number, register: number, byte: number, cb?: IWriteCallback): void;
+  public writeByte(address: number, byte: number, cb?: WriteCallback): void;
+  public writeByte(address: number, register: number, byte: number, cb?: WriteCallback): void;
   public writeByte(
     address: number,
     registerOrByte: number,
-    byteOrCb?: number | IWriteCallback,
-    cb?: IWriteCallback
+    byteOrCb?: number | WriteCallback,
+    cb?: WriteCallback
   ): void {
     this.validateAlive();
 
@@ -394,13 +394,13 @@ export class I2C extends Peripheral {
     }
   }
 
-  public writeWord(address: number, word: number, cb?: IWriteCallback): void;
-  public writeWord(address: number, register: number, word: number, cb?: IWriteCallback): void;
+  public writeWord(address: number, word: number, cb?: WriteCallback): void;
+  public writeWord(address: number, register: number, word: number, cb?: WriteCallback): void;
   public writeWord(
     address: number,
     registerOrWord: number,
-    wordOrCb?: number | IWriteCallback,
-    cb?: IWriteCallback
+    wordOrCb?: number | WriteCallback,
+    cb?: WriteCallback
   ): void {
     this.validateAlive();
 
