@@ -78,7 +78,7 @@ function checkCallback(cb: any) {
 }
 
 function createReadCallback(suppliedCallback?: ReadCallback): any {
-  return function(err: any, resultOrBytesRead: any, result?: any) {
+  return (err: any, resultOrBytesRead: any, result?: any) => {
     if (suppliedCallback) {
       if (err) {
         suppliedCallback(err, null);
@@ -92,7 +92,7 @@ function createReadCallback(suppliedCallback?: ReadCallback): any {
 }
 
 function createWriteCallback(suppliedCallback?: WriteCallback): any {
-  return function(err: any) {
+  return (err: any) => {
     if (suppliedCallback) {
       suppliedCallback(err || null);
     }
@@ -101,7 +101,7 @@ function createWriteCallback(suppliedCallback?: WriteCallback): any {
 
 export class I2C extends Peripheral {
 
-  private _devices: Array<I2cBus> = [];
+  private _devices: I2cBus[] = [];
 
   constructor() {
     super([ 'SDA0', 'SCL0' ]);
@@ -112,17 +112,6 @@ export class I2C extends Peripheral {
     this._devices.forEach((device) => device.closeSync());
     this._devices = [];
     super.destroy();
-  }
-
-  private _getDevice(address: number) {
-    let device = this._devices[address];
-
-    if (device === undefined) {
-      device = openSync(getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
-      this._devices[address] = device;
-    }
-
-    return device;
   }
 
   public read(address: number, length: number, cb: ReadCallback): void;
@@ -167,7 +156,7 @@ export class I2C extends Peripheral {
 
     let register: number | undefined;
     if (typeof length === 'undefined') {
-      length = +<number>registerOrLength;
+      length = +(registerOrLength as number);
     } else {
       register = registerOrLength;
       length = +length;
@@ -244,6 +233,8 @@ export class I2C extends Peripheral {
     let register: number | undefined;
     if (typeof registerOrCb === 'function') {
       cb = registerOrCb;
+    } else {
+      register = registerOrCb;
     }
 
     checkAddress(address);
@@ -295,7 +286,7 @@ export class I2C extends Peripheral {
     let buffer: Buffer;
     let register: number | undefined;
     if (Buffer.isBuffer(registerOrBuffer)) {
-      cb = <any>bufferOrCb;
+      cb = bufferOrCb as WriteCallback;
       buffer = registerOrBuffer;
       register = undefined;
     } else if (typeof registerOrBuffer === 'number' && Buffer.isBuffer(bufferOrCb)) {
@@ -450,5 +441,16 @@ export class I2C extends Peripheral {
     } else {
       this._getDevice(address).writeWordSync(address, register, word);
     }
+  }
+
+  private _getDevice(address: number) {
+    let device = this._devices[address];
+
+    if (device === undefined) {
+      device = openSync(getBoardRevision() === VERSION_1_MODEL_B_REV_1 ? 0 : 1);
+      this._devices[address] = device;
+    }
+
+    return device;
   }
 }

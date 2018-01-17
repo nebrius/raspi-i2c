@@ -110,14 +110,6 @@ var I2C = /** @class */ (function (_super) {
         this._devices = [];
         _super.prototype.destroy.call(this);
     };
-    I2C.prototype._getDevice = function (address) {
-        var device = this._devices[address];
-        if (device === undefined) {
-            device = i2c_bus_1.openSync(raspi_board_1.getBoardRevision() === raspi_board_1.VERSION_1_MODEL_B_REV_1 ? 0 : 1);
-            this._devices[address] = device;
-        }
-        return device;
-    };
     I2C.prototype.read = function (address, registerOrLength, lengthOrCb, cb) {
         this.validateAlive();
         var length;
@@ -215,6 +207,9 @@ var I2C = /** @class */ (function (_super) {
         var register;
         if (typeof registerOrCb === 'function') {
             cb = registerOrCb;
+        }
+        else {
+            register = registerOrCb;
         }
         checkAddress(address);
         checkRegister(register);
@@ -385,6 +380,14 @@ var I2C = /** @class */ (function (_super) {
         else {
             this._getDevice(address).writeWordSync(address, register, word);
         }
+    };
+    I2C.prototype._getDevice = function (address) {
+        var device = this._devices[address];
+        if (device === undefined) {
+            device = i2c_bus_1.openSync(raspi_board_1.getBoardRevision() === raspi_board_1.VERSION_1_MODEL_B_REV_1 ? 0 : 1);
+            this._devices[address] = device;
+        }
+        return device;
     };
     return I2C;
 }(raspi_peripheral_1.Peripheral));

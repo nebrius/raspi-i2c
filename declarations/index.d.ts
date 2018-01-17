@@ -6,7 +6,6 @@ export declare class I2C extends Peripheral {
     private _devices;
     constructor();
     destroy(): void;
-    private _getDevice(address);
     read(address: number, length: number, cb: ReadCallback): void;
     read(address: number, register: number, length: number, cb: ReadCallback): void;
     readSync(address: number, registerOrLength: number | undefined, length?: number): Buffer;
@@ -26,4 +25,5 @@ export declare class I2C extends Peripheral {
     writeWord(address: number, word: number, cb?: WriteCallback): void;
     writeWord(address: number, register: number, word: number, cb?: WriteCallback): void;
     writeWordSync(address: number, registerOrWord: number, word?: number): void;
+    private _getDevice(address);
 }

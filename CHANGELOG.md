@@ -1,3 +1,7 @@
+## 6.1.1 (2018-01-16)
+
+- Fixed a bug where readWord wasn't properly swizzling the registerOrCb argument as a register when all parameters supplied
+
 ## 6.1.0 (2017-9-15)
 
 - Removed logic for parsing pin information passed to the constructor
