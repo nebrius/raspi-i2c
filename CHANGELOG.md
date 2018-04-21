@@ -1,4 +1,9 @@
-## 6.1.1 (2018-01-16)
+## 6.1.2 (2018-4-21)
+
+- Updated to i2c-bus v3.
+    - Note: there are breaking changes in i2c-bus v3, but they are not surfaced in raspi-i2c.
+
+## 6.1.1 (2018-1-16)
 
 - Fixed a bug where readWord wasn't properly swizzling the registerOrCb argument as a register when all parameters supplied
 
