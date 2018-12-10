@@ -1,3 +1,10 @@
+## 6.2.0 (2018-12-10)
+
+- Updated TypeScript to v3. Note: the compiled output changed as I previously didn't set the compiled output target flag correctly.
+- Added `module` export to conform with Core IO types
+- Updated to i2c-bus v4.
+    - Note: there are breaking changes in i2c-bus 4, but they are not surfaced in raspi-i2c.
+
 ## 6.1.2 (2018-4-21)
 
 - Updated to i2c-bus v3.

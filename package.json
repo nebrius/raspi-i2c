@@ -1,22 +1,23 @@
 {
   "name": "raspi-i2c",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "Provides access to I2C on the Raspberry Pi from Node.js ",
   "main": "dist/index.js",
   "types": "./declarations/index.d.ts",
   "dependencies": {
-    "i2c-bus": "^3.1.0",
-    "ini-builder": "^1.0.3",
-    "raspi-board": "^5.0.1",
-    "raspi-peripheral": "^2.0.1"
+    "i2c-bus": "^4.0.6",
+    "ini-builder": "^1.1.1",
+    "raspi-board": "^6.2.0",
+    "raspi-peripheral": "^3.0.1"
   },
   "devDependencies": {
-    "@types/i2c-bus": "^1.0.11",
-    "@types/node": "^9.3.0",
-    "@types/raspi-board": "^5.0.0",
+    "@types/i2c-bus": "^1.0.19",
+    "@types/node": "^10.12.12",
+    "@types/raspi-board": "^5.2.0",
     "@types/raspi-peripheral": "^2.0.0",
+    "core-io-types": "^1.2.0",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.2"
+    "typescript": "3.2.1"
   },
   "engines": {
     "node": ">= 6.4.0"

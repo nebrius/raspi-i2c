@@ -1,8 +1,9 @@
 /// <reference types="node" />
 import { Peripheral } from 'raspi-peripheral';
+import { II2C, II2CModule } from 'core-io-types';
 export declare type ReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
 export declare type WriteCallback = (err: null | Error | string) => void;
-export declare class I2C extends Peripheral {
+export declare class I2C extends Peripheral implements II2C {
     private _devices;
     constructor();
     destroy(): void;
@@ -25,5 +26,6 @@ export declare class I2C extends Peripheral {
     writeWord(address: number, word: number, cb?: WriteCallback): void;
     writeWord(address: number, register: number, word: number, cb?: WriteCallback): void;
     writeWordSync(address: number, registerOrWord: number, word?: number): void;
-    private _getDevice(address);
+    private _getDevice;
 }
+export declare const module: II2CModule;

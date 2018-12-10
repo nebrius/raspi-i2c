@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 Bryan Hughes <bryan@nebri.us>
+Copyright (c) Bryan Hughes <bryan@nebri.us>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import { openSync, I2cBus } from 'i2c-bus';
 import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
+import { II2C, II2CModule } from 'core-io-types';
 
 export type ReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
 
@@ -99,7 +100,7 @@ function createWriteCallback(suppliedCallback?: WriteCallback): any {
   };
 }
 
-export class I2C extends Peripheral {
+export class I2C extends Peripheral implements II2C {
 
   private _devices: I2cBus[] = [];
 
@@ -454,3 +455,9 @@ export class I2C extends Peripheral {
     return device;
   }
 }
+
+export const module: II2CModule = {
+  createI2C() {
+    return new I2C();
+  }
+};

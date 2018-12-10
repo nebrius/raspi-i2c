@@ -82,6 +82,38 @@ Finally, if you try to access a device that doesn't exist, you will get an error
 
 ## API
 
+### Module Constants
+
+<table>
+  <thead>
+    <tr>
+      <th>Constant</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>module</td>
+    <td>An easily consumable object for indirectly passing this module around. Intended specifically for use by Core IO (details coming soon)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>createI2C()</td>
+        <tr>Function</tr>
+        <td>Pass through for the <a href="#new-i2c">I2C constructor</a></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+
 ### new I2C(pins)
 
 Instantiates a new I2C instance on the given pins. Note that I2C is limited to only 1 pair of pins on all current models of the Raspberry Pi. Check the [wiring information wiki](https://github.com/nebrius/raspi-io/wiki) for more information.
@@ -662,7 +694,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 Bryan Hughes <bryan@nebri.us>
+Copyright (c) Bryan Hughes <bryan@nebri.us>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
