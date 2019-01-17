@@ -65,7 +65,7 @@ function checkCallback(cb) {
         throw new Error('Invalid I2C callback');
     }
 }
-function createReadCallback(suppliedCallback) {
+function createReadBufferCallback(suppliedCallback) {
     return (err, resultOrBytesRead, result) => {
         if (suppliedCallback) {
             if (err) {
@@ -74,8 +74,20 @@ function createReadCallback(suppliedCallback) {
             else if (typeof result !== 'undefined') {
                 suppliedCallback(null, result);
             }
-            else {
+            else if (Buffer.isBuffer(resultOrBytesRead)) {
                 suppliedCallback(null, resultOrBytesRead);
+            }
+        }
+    };
+}
+function createReadNumberCallback(suppliedCallback) {
+    return (err, result) => {
+        if (suppliedCallback) {
+            if (err) {
+                suppliedCallback(err, null);
+            }
+            else if (typeof result !== 'undefined') {
+                suppliedCallback(null, result);
             }
         }
     };
@@ -120,10 +132,10 @@ class I2C extends raspi_peripheral_1.Peripheral {
         checkCallback(cb);
         const buffer = new Buffer(length);
         if (register === undefined) {
-            this._getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
+            this._getDevice(address).i2cRead(address, length, buffer, createReadBufferCallback(cb));
         }
         else {
-            this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
+            this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadBufferCallback(cb));
         }
     }
     readSync(address, registerOrLength, length) {
@@ -172,7 +184,7 @@ class I2C extends raspi_peripheral_1.Peripheral {
             });
         }
         else {
-            this._getDevice(address).readByte(address, register, createReadCallback(cb));
+            this._getDevice(address).readByte(address, register, createReadNumberCallback(cb));
         }
     }
     readByteSync(address, register) {
@@ -214,7 +226,7 @@ class I2C extends raspi_peripheral_1.Peripheral {
             });
         }
         else {
-            this._getDevice(address).readWord(address, register, createReadCallback(cb));
+            this._getDevice(address).readWord(address, register, createReadNumberCallback(cb));
         }
     }
     readWordSync(address, register) {

@@ -22,15 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { openSync, I2cBus } from 'i2c-bus';
+import { openSync, I2cBus, BufferCallback, ResultCallback } from 'i2c-bus';
 import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
-import { II2C, II2CModule } from 'core-io-types';
-
-export type ReadCallback = (err: null | Error | string, data: null | Buffer | number) => void;
-
-export type WriteCallback = (err: null | Error | string) => void;
+import { II2C, II2CModule, I2CReadBufferCallback, I2CReadNumberCallback, I2CWriteCallback } from 'core-io-types';
 
 function checkAddress(address: any) {
   if (typeof address !== 'number' || address < 0 || address > 0x7f) {
@@ -78,21 +74,33 @@ function checkCallback(cb: any) {
   }
 }
 
-function createReadCallback(suppliedCallback?: ReadCallback): any {
-  return (err: any, resultOrBytesRead: any, result?: any) => {
+function createReadBufferCallback(suppliedCallback?: I2CReadBufferCallback): BufferCallback {
+  return (err: any, resultOrBytesRead?: Buffer | number, result?: Buffer) => {
     if (suppliedCallback) {
       if (err) {
         suppliedCallback(err, null);
       } else if (typeof result !== 'undefined') {
         suppliedCallback(null, result);
-      } else {
+      } else if (Buffer.isBuffer(resultOrBytesRead)) {
         suppliedCallback(null, resultOrBytesRead);
       }
     }
   };
 }
 
-function createWriteCallback(suppliedCallback?: WriteCallback): any {
+function createReadNumberCallback(suppliedCallback?: I2CReadNumberCallback): ResultCallback<number> {
+  return (err: any, result?: number) => {
+    if (suppliedCallback) {
+      if (err) {
+        suppliedCallback(err, null);
+      } else if (typeof result !== 'undefined') {
+        suppliedCallback(null, result);
+      }
+    }
+  };
+}
+
+function createWriteCallback(suppliedCallback?: I2CWriteCallback): any {
   return (err: any) => {
     if (suppliedCallback) {
       suppliedCallback(err || null);
@@ -115,13 +123,13 @@ export class I2C extends Peripheral implements II2C {
     super.destroy();
   }
 
-  public read(address: number, length: number, cb: ReadCallback): void;
-  public read(address: number, register: number, length: number, cb: ReadCallback): void;
+  public read(address: number, length: number, cb: I2CReadBufferCallback): void;
+  public read(address: number, register: number, length: number, cb: I2CReadBufferCallback): void;
   public read(
     address: number,
     registerOrLength: number,
-    lengthOrCb: number | ReadCallback,
-    cb?: ReadCallback
+    lengthOrCb: number | I2CReadBufferCallback,
+    cb?: I2CReadBufferCallback
   ): void {
     this.validateAlive();
 
@@ -146,9 +154,9 @@ export class I2C extends Peripheral implements II2C {
     const buffer = new Buffer(length);
 
     if (register === undefined) {
-      this._getDevice(address).i2cRead(address, length, buffer, createReadCallback(cb));
+      this._getDevice(address).i2cRead(address, length, buffer, createReadBufferCallback(cb));
     } else {
-      this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadCallback(cb));
+      this._getDevice(address).readI2cBlock(address, register, length, buffer, createReadBufferCallback(cb));
     }
   }
 
@@ -178,9 +186,9 @@ export class I2C extends Peripheral implements II2C {
     return buffer;
   }
 
-  public readByte(address: number, cb: ReadCallback): void;
-  public readByte(address: number, register: number, cb: ReadCallback): void;
-  public readByte(address: number, registerOrCb: number | ReadCallback, cb?: ReadCallback): void {
+  public readByte(address: number, cb: I2CReadNumberCallback): void;
+  public readByte(address: number, register: number, cb: I2CReadNumberCallback): void;
+  public readByte(address: number, registerOrCb: number | I2CReadNumberCallback, cb?: I2CReadNumberCallback): void {
     this.validateAlive();
 
     let register: number | undefined;
@@ -205,7 +213,7 @@ export class I2C extends Peripheral implements II2C {
         }
       });
     } else {
-      this._getDevice(address).readByte(address, register, createReadCallback(cb));
+      this._getDevice(address).readByte(address, register, createReadNumberCallback(cb));
     }
   }
 
@@ -226,9 +234,9 @@ export class I2C extends Peripheral implements II2C {
     return byte;
   }
 
-  public readWord(address: number, cb: ReadCallback): void;
-  public readWord(address: number, register: number, cb: ReadCallback): void;
-  public readWord(address: number, registerOrCb: number | ReadCallback, cb?: ReadCallback): void {
+  public readWord(address: number, cb: I2CReadNumberCallback): void;
+  public readWord(address: number, register: number, cb: I2CReadNumberCallback): void;
+  public readWord(address: number, registerOrCb: number | I2CReadNumberCallback, cb?: I2CReadNumberCallback): void {
     this.validateAlive();
 
     let register: number | undefined;
@@ -253,7 +261,7 @@ export class I2C extends Peripheral implements II2C {
         }
       });
     } else {
-      this._getDevice(address).readWord(address, register, createReadCallback(cb));
+      this._getDevice(address).readWord(address, register, createReadNumberCallback(cb));
     }
   }
 
@@ -274,20 +282,20 @@ export class I2C extends Peripheral implements II2C {
     return byte;
   }
 
-  public write(address: number, buffer: Buffer, cb?: WriteCallback): void;
-  public write(address: number, register: number, buffer: Buffer, cb?: WriteCallback): void;
+  public write(address: number, buffer: Buffer, cb?: I2CWriteCallback): void;
+  public write(address: number, register: number, buffer: Buffer, cb?: I2CWriteCallback): void;
   public write(
     address: number,
     registerOrBuffer: number | Buffer,
-    bufferOrCb?: Buffer | WriteCallback,
-    cb?: WriteCallback
+    bufferOrCb?: Buffer | I2CWriteCallback,
+    cb?: I2CWriteCallback
   ): void {
     this.validateAlive();
 
     let buffer: Buffer;
     let register: number | undefined;
     if (Buffer.isBuffer(registerOrBuffer)) {
-      cb = bufferOrCb as WriteCallback;
+      cb = bufferOrCb as I2CWriteCallback;
       buffer = registerOrBuffer;
       register = undefined;
     } else if (typeof registerOrBuffer === 'number' && Buffer.isBuffer(bufferOrCb)) {
@@ -334,13 +342,13 @@ export class I2C extends Peripheral implements II2C {
     }
   }
 
-  public writeByte(address: number, byte: number, cb?: WriteCallback): void;
-  public writeByte(address: number, register: number, byte: number, cb?: WriteCallback): void;
+  public writeByte(address: number, byte: number, cb?: I2CWriteCallback): void;
+  public writeByte(address: number, register: number, byte: number, cb?: I2CWriteCallback): void;
   public writeByte(
     address: number,
     registerOrByte: number,
-    byteOrCb?: number | WriteCallback,
-    cb?: WriteCallback
+    byteOrCb?: number | I2CWriteCallback,
+    cb?: I2CWriteCallback
   ): void {
     this.validateAlive();
 
@@ -386,13 +394,13 @@ export class I2C extends Peripheral implements II2C {
     }
   }
 
-  public writeWord(address: number, word: number, cb?: WriteCallback): void;
-  public writeWord(address: number, register: number, word: number, cb?: WriteCallback): void;
+  public writeWord(address: number, word: number, cb?: I2CWriteCallback): void;
+  public writeWord(address: number, register: number, word: number, cb?: I2CWriteCallback): void;
   public writeWord(
     address: number,
     registerOrWord: number,
-    wordOrCb?: number | WriteCallback,
-    cb?: WriteCallback
+    wordOrCb?: number | I2CWriteCallback,
+    cb?: I2CWriteCallback
   ): void {
     this.validateAlive();
 

@@ -1,3 +1,7 @@
+## 6.2.1 (2019-1-10)
+
+- Got rid of duplicate callback TypeScript types and tightened up the code a bit as a result. No behavior change outside of TypeScript.
+
 ## 6.2.0 (2018-12-10)
 
 - Updated TypeScript to v3. Note: the compiled output changed as I previously didn't set the compiled output target flag correctly.
