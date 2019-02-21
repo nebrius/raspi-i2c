@@ -1,3 +1,7 @@
+## 6.2.2 (2019-2-20)
+
+- Updated dependencies
+
 ## 6.2.1 (2019-1-10)
 
 - Got rid of duplicate callback TypeScript types and tightened up the code a bit as a result. No behavior change outside of TypeScript.

@@ -26,7 +26,7 @@ import { openSync, I2cBus, BufferCallback, ResultCallback } from 'i2c-bus';
 import { execSync } from 'child_process';
 import { Peripheral } from 'raspi-peripheral';
 import { VERSION_1_MODEL_B_REV_1, getBoardRevision } from 'raspi-board';
-import { II2C, II2CModule, I2CReadBufferCallback, I2CReadNumberCallback, I2CWriteCallback } from 'core-io-types';
+import { II2C, II2CModule, I2CReadBufferCallback, I2CReadNumberCallback, I2CWriteCallback } from 'j5-io-types';
 
 function checkAddress(address: any) {
   if (typeof address !== 'number' || address < 0 || address > 0x7f) {

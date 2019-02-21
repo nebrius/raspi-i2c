@@ -1,6 +1,5 @@
-/// <reference types="node" />
 import { Peripheral } from 'raspi-peripheral';
-import { II2C, II2CModule, I2CReadBufferCallback, I2CReadNumberCallback, I2CWriteCallback } from 'core-io-types';
+import { II2C, II2CModule, I2CReadBufferCallback, I2CReadNumberCallback, I2CWriteCallback } from 'j5-io-types';
 export declare class I2C extends Peripheral implements II2C {
     private _devices;
     constructor();
