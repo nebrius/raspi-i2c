@@ -1,6 +1,6 @@
 {
   "name": "raspi-i2c",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "description": "Provides access to I2C on the Raspberry Pi from Node.js ",
   "main": "dist/index.js",
   "types": "./declarations/index.d.ts",
@@ -23,7 +23,8 @@
     "node": ">= 6.4.0"
   },
   "cpu": [
-    "arm"
+    "arm",
+    "arm64"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
