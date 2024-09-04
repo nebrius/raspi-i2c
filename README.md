@@ -1,7 +1,7 @@
 Raspi I2C
 =========
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nebrius/raspi-io?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+**NOTE: This project is in maintenance mode and no longer actively maintained.**
 
 Raspi I2C is part of the [Raspi.js suite](https://github.com/nebrius/raspi) that provides access to the hardware I2C on pins 3 (SDA0) and 5 (SCL0).
 
